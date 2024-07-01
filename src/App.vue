@@ -13,4 +13,6 @@ export default {
   <router-view></router-view>
 </template>
 
-<style></style>
+<style lang="scss">
+  @use './style/generic';
+</style>

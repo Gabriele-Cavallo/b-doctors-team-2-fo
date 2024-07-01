@@ -14,6 +14,9 @@ export default {
                 <li class="nav-item">
                     <router-link class="nav-link link-dark" :to="{name: 'about'}">About Us</router-link>
                 </li>
+                <li class="nav-item">
+                    <router-link class="nav-link link-dark" :to="{name: 'our-doctors'}">I nostri dottori</router-link>
+                </li>
             </ul>
         </div>
     </header>
