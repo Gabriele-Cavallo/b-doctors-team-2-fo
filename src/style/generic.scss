@@ -6,13 +6,9 @@
 .card{
     min-height: 200px;
 }
-.anchor{
-    position: relative;
-}
 .show-more{
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 h1{
     margin-left: -6px;
