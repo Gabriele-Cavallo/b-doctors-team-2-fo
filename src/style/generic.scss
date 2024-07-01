@@ -1,1 +1,19 @@
 @import "node_modules/bootstrap/scss/bootstrap";
+
+.row > .ms-col-6{
+    max-width: calc(50% - 20px);
+}
+.card{
+    min-height: 200px;
+}
+.anchor{
+    position: relative;
+}
+.show-more{
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+h1{
+    margin-left: -6px;
+}
