@@ -20,7 +20,7 @@ export default {
             </div>
             <div class="ms-card">
                 <i class="fa-regular fa-envelope"></i>
-                <p>Prenota visite online in modo facile e veloce, per te e i tuoi familiari</p>
+                <p>Scambia messaggi con i tuoi medici in totale sicurezza</p>
             </div>
         </div>
     </div>
