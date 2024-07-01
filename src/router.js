@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import AppHome from './pages/AppHome.vue';
 import AppAbout from './pages/AppAbout.vue';
 import AppOurDoctors from './pages/AppOurDoctors.vue';
-import Cardiologia from './pages/Cardiologia.vue';
+import SingleSpecialisation from './pages/SingleSpecialisation.vue';
 const router = createRouter({   
     history: createWebHistory(),
     routes: [
@@ -23,8 +23,8 @@ const router = createRouter({
         },
         {
             path: '/our-doctors/:slug',
-            name: 'cardiologia',
-            component: Cardiologia
+            name: 'single-specialisation',
+            component: SingleSpecialisation
         },
     ]
 });
