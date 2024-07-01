@@ -5,7 +5,7 @@
 </script>
 
 <template>
-    <h1>ECCO I NOSTRI DOTTORI</h1>
+        <h1>ECCO I NOSTRI DOTTORI</h1>
 </template>
 
 <style lang="scss" scoped>
