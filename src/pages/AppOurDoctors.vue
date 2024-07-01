@@ -67,6 +67,9 @@
 section{
     color: white;
     background-color: $primary-color;
+    h4{
+        color:$primary-color;
+    }
     .btn-brand{
         color:$primary-color;
         background-color: $secondary-color;
