@@ -30,7 +30,7 @@
         <div class="container py-3">
             <div class="wrapper d-flex align-items-center justify-content-between">
                 <h1>[Specialisation name]</h1>
-                <router-link :to="{ name: 'our-doctors' }" class="btn btn-primary">Ritorna</router-link>
+                <router-link :to="{ name: 'our-doctors' }" class="btn btn-brand">Ritorna</router-link>
             </div>
             <div v-for="doctor in doctors" class="doctors-wrapper">
                 <p><strong>Nome</strong>: {{ doctor.user.name }}</p>
@@ -45,5 +45,9 @@
 section{
     background-color: $primary-color;
     color: white;
+    .btn-brand{
+        color:$primary-color;
+        background-color: $secondary-color;
+}
 }
 </style>

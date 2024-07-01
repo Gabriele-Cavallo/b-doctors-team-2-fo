@@ -48,7 +48,7 @@
                 <div v-for="specialisation in specialisations" :key="specialisation.id" class="card ms-col-6 my-3">
                     <div class="show-more my-2">
                         <h4>{{ specialisation.name }}</h4>
-                        <router-link :to="{ name: 'single-specialisation', params: { slug: specialisation.slug } }" class="btn btn-primary">Mostra i dottori</router-link>
+                        <router-link :to="{ name: 'single-specialisation', params: { slug: specialisation.slug } }" class="btn btn-brand">Mostra i dottori</router-link>
                     </div>
                     <ul v-for="doctor in getFilteredDoctors(specialisation.name)">
                         <div v-if="doctor.visibility === 1">
@@ -67,5 +67,9 @@
 section{
     color: white;
     background-color: $primary-color;
+    .btn-brand{
+        color:$primary-color;
+        background-color: $secondary-color;
+    }
 }
 </style>
