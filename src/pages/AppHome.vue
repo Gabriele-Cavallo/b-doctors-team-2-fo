@@ -53,7 +53,7 @@
     width: 100%;
     max-width: 600px;
     text-align: center;
-    margin-top: 1rem; /* Ridotto il margine superiore */
+    margin-top: 1rem;
 }
 
 .text-white {
