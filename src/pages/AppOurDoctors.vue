@@ -46,11 +46,15 @@
             <h1>ECCO I NOSTRI DOTTORI:</h1>
             <div class="px-2 cards-wrapper row justify-content-between anchor">
                 <div v-for="specialisation in specialisations" :key="specialisation.id" class="card ms-col-6 my-3">
-                    <h4>{{ specialisation.name }}</h4>
-                    <div v-for="doctor in getFilteredDoctors(specialisation.name)">
-                        <p>{{ doctor.user.name }} - {{doctor.performance}}</p>
+                    <div class="show-more my-2">
+                        <h4>{{ specialisation.name }}</h4>
+                        <router-link :to="{ name: 'single-specialisation', params: { slug: specialisation.slug } }" class="btn btn-brand">Mostra i dottori</router-link>
                     </div>
-                    <router-link :to="{ name: 'cardiologia', params: { slug: specialisation.slug } }" class="btn btn-primary show-more">Mostra i dottori</router-link>
+                    <ul v-for="doctor in getFilteredDoctors(specialisation.name)">
+                        <div v-if="doctor.visibility === 1">
+                            <li>{{ doctor.user.name }} - {{doctor.performance}}</li>
+                        </div>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -63,5 +67,12 @@
 section{
     color: white;
     background-color: $primary-color;
+    h4{
+        color:$primary-color;
+    }
+    .btn-brand{
+        color:$primary-color;
+        background-color: $secondary-color;
+    }
 }
 </style>
