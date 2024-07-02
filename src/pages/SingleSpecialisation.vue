@@ -13,6 +13,7 @@
             }
         },
         methods: {
+            // Funzione che chiama dal db i dati della singola specializzazione
             getSingleSpecialisation (){
                 axios.get(`${this.store.apiUrl}/api/specialisations/${this.$route.params.slug}`)
                 .then((response) => {
