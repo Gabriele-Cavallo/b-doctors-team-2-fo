@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-    <header>
+    <header class="shadow-lg">
         <div class="container d-flex justify-content-around">
             <div>
                 <h1>BD<i class="fa-solid fa-stethoscope"></i>ctors</h1>
