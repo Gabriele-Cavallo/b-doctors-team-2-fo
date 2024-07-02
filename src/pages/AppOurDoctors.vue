@@ -13,6 +13,7 @@
             }
         },
         methods: {
+            // Funzione che prende dal db l'elenco delle specializzazioni
             getAllSpecialisations (){
                 axios.get(`${this.store.apiUrl}/api/specialisations`)
                 .then((response) => {
@@ -20,12 +21,14 @@
                     this.loading = true;
                 })
             },
+            // Funzione che prende dal db tutti i dottori
             getAllDoctors (){
                 axios.get(`${this.store.apiUrl}/api/profiles`)
                 .then((response) => {
                     this.doctors = response.data.results.data;
                 })
             },
+            // Funzione che torna un array di dottori filtrato in base al nome della specializzazione della card in cui sono inseriti
             getFilteredDoctors(specialisationName) {
                 return this.doctors.filter(doctor => 
                 doctor.specialisations.some(allSpecialisations  => allSpecialisations.name === specialisationName)
