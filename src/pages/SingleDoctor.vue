@@ -35,9 +35,11 @@
             </div>
             <div class="doctor-wrapper card my-4 p-3">
                 <img class="profile-photo mb-3" v-if="doctor.photo" :src="`http://127.0.0.1:8000/storage/${doctor.photo}`" :alt="doctor.user_name">
-                <p><strong>Nome</strong>: {{ doctor.user_name }}</p>
-                <p><strong>Email</strong>: {{ doctor.user_mail }}</p>
-                <p><strong>Specializzazione</strong>: {{ doctor.spec_name }}</p>
+                <p><strong>Nome</strong>: {{ doctor.user.name }}</p>
+                <p><strong>Email</strong>: {{ doctor.user.email }}</p>
+                <p v-if="doctor.specialisations.length > 0" class="card-text"><strong>Specializzazioni</strong>: 
+                    <span v-for="specialisation in doctor.specialisations">{{ specialisation.name }} &nbsp;</span>
+                </p>
                 <p><strong>Performance</strong>: {{ doctor.performance }}</p>
                 <p><strong>Telefono</strong>: {{ doctor.telephone_number }}</p>
                 <p><strong>Bio</strong>: {{ doctor.bio }}</p>

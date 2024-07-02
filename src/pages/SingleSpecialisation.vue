@@ -37,14 +37,19 @@
                 <router-link :to="{ name: 'our-doctors' }" class="btn btn-brand">Ritorna</router-link>
             </div>
             <div v-for="doctor in doctors" class="doctors-wrapper card my-4 p-3">
-                <img class="profile-photo mb-3" v-if="doctor.photo" :src="`http://127.0.0.1:8000/storage/${doctor.photo}`" :alt="doctor.user_name">
-                <p><strong>Nome</strong>: {{ doctor.user_name }}</p>
-                <p><strong>Email</strong>: {{ doctor.user_mail }}</p>
-                <p><strong>Specializzazione</strong>: {{ doctor.spec_name}}</p>
-                <p><strong>Performance</strong>: {{ doctor.performance}}</p>
-                <p><strong>Telefono</strong>: {{ doctor.telephone_number}}</p>
-                <p><strong>Bio</strong>: {{ doctor.bio}}</p>
-                <router-link :to="{ name: 'single-doctor', params: { slug: doctor.user_slug } }" class="btn btn-brand">Mostra dottore</router-link>
+                <div class="card-wrapper d-flex align-items-center">
+                    <div class="img-wrapper me-3">
+                        <img v-if="doctor.photo" :src="`http://127.0.0.1:8000/storage/${doctor.photo}`" :alt="doctor.user_name">
+                    </div>
+                    <div class="info-wrapper">
+                        <p><strong>Nome</strong>: {{ doctor.user_name }}</p>
+                        <p><strong>Email</strong>: {{ doctor.user_mail }}</p>
+                        <p><strong>Specializzazione</strong>: {{ doctor.spec_name}}</p>
+                        <p><strong>Performance</strong>: {{ doctor.performance}}</p>
+                        <p><strong>Telefono</strong>: {{ doctor.telephone_number}}</p>
+                        <router-link :to="{ name: 'single-doctor', params: { slug: doctor.user_slug } }" class="btn btn-brand">Mostra dottore</router-link>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -60,16 +65,14 @@ section{
         color:$primary-color;
         background-color: $secondary-color;
     }
-    .profile-photo{
-        max-height: 100px;
-        max-width: 100px;
-        border-radius: 20px;
-        object-fit: cover;
-    }
     p{
         strong{
             color: $primary-color;
         }
+    }
+    img{
+        max-height: 250px;
+        object-fit: cover;
     }
 }
 </style>
