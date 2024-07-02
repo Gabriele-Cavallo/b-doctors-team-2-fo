@@ -43,7 +43,7 @@ export default {
             </div>
         </div>
     </div>
-    <div class="search-bar container container-fluid d-flex gap-3 my-4 flex-wrap justify-content-center">
+    <div class="search-bar container d-flex gap-3 my-4 flex-wrap justify-content-center">
         <div v-for="specialisation in specialisations" :key="specialisation.id">
             <router-link :to="{ name: 'single-specialisation', params: { slug: specialisation.slug } }" class="btn btn-brand badge ms-badge">{{ specialisation.name }}</router-link>
         </div>
