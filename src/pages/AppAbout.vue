@@ -27,12 +27,13 @@ export default {
 
             <div class="ms-row d-flex py-5">
                 <div class="w-100 align-self-center">
-                    <h2 class="mb-4">Tutti i dati che trovi su BDoctors sono protetti e sicuri</h2>
+                    <h2 class="mb-4">I dati presenti su BDoctors sono tutelati e sicuri</h2>
                     <ul>
-                        <li>Tutti i dati che inserisci sono esclusivamente tuoi</li>
-                        <li>Tutte le informazioni che ti appartengono sono criptate e protette</li>
-                        <li>BDoctors non condividerà e non venderà i tuoi dati</li>
+                        <li>I dati che inserisci rimangono di tua esclusiva proprietà</li>
+                        <li>Tutte le tue informazioni personali sono cifrate e protette</li>
+                        <li>BDoctors non condividerà né venderà le tue informazioni</li>
                     </ul>
+                    <a class="btn btn-success mt-3 ms-3" href="https://www.garanteprivacy.it/il-testo-del-regolamento" role="button">informati</a>
                 </div>
                 <div class="flex-shrink-1">
                     <img src="https://platform.docplanner.com/img/general/ilustrations/privacy-website.svg" class="small-photo">
@@ -40,10 +41,10 @@ export default {
             </div>
 
             <div class="ms-row d-flex py-5">
-                <div class="flex-shrink-1">
-                    <img src="https://platform.docplanner.com/img/general/ilustrations/privacy-website.svg">
+                <div>
+                    <img src="https://platform.docplanner.com/img/general/ilustrations/privacy-owner.svg" class="big-photo">
                 </div>
-                <div class="w-100 align-self-center ms-5">
+                <div class="align-self-center ms-3">
                     <h2>L'unico proprietario dei dati sei tu</h2>
                     <p class="mb-4">Nessuno può avere accesso ai dati inseriti da pazienti e medici</p>
                     <h4>Tutti i dati in BDoctors sono esclusivamente di chi li inserisce.</h4>
@@ -51,6 +52,12 @@ export default {
                 </div>
             </div>
         </div>
+        
+        <footer>
+            <div>
+                <p>© 2024 BDoctors. Tutti i diritti riservati. Le informazioni fornite su questo sito, comprese le prenotazioni delle visite mediche, i messaggi al medico e le recensioni, sono a scopo informativo e non sostituiscono il consiglio medico professionale.</p>
+            </div>
+        </footer>
     </section>
 </template>
 
@@ -76,6 +83,9 @@ h1{
 
 .ms-row{
     margin-top: 50px;
+    background-color: rgba(179, 255, 227, 0.587);
+    border-radius: 40px;
+    padding: 40px 20px;
     .ms-card{
         width: calc(100% / 3);
         margin: 0 30px;
@@ -86,13 +96,35 @@ h1{
         }
     }
     h2{
-        font-size: 40px;
+        font-size: 39px;
     }
     ul{
         line-height: 40px;
     }
+    a{
+        color:$primary-color;
+        background-color: $secondary-color;
+        border: none;
+    }
+    a:hover {
+        color: white;
+        background-color: $primary-color;
+    }
     .small-photo{
         width: 80%;
+    }
+    .big-photo{
+        width: 600px;
+    }
+}
+
+footer{
+    text-align: center;
+    margin: 0 auto;
+    width: 700px;
+    padding: 100px 0 10px 0;
+    p{
+        border-top: 2px solid rgba(255, 255, 255, 0.522);
     }
 }
 </style>
