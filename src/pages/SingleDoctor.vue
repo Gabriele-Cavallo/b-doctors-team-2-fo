@@ -20,6 +20,7 @@
                 submitReview: false,
                 userTc: '',
                 userTcReview: '',
+                userRate: ''
             }
         },
         methods: {
@@ -58,8 +59,21 @@
                     this.submit = false;
                 })
             },
-            // Funzione che manda al db la recensione dell' utente
-            sendReview() {
+            // Funzione che manda al db il voto e la recensione dell' utente
+            sendReviewAndRating() {
+                const userRate = {
+                    score: this.userRate,
+                };
+                axios.post(`${this.store.apiUrl}/api/ratings`, userRate)
+                .then(response => {
+                    if(response.data.success) {
+                        this.errors = {},
+                        this.userRate = '';
+                    } else {
+                        this.errors = response.data.errors;
+                    }
+                })
+
                 const userReview = {
                     name: this.userNameReview,
                     description: this.userMessageReview,
@@ -192,7 +206,7 @@
         <div class="review-wrapper container p-2">
             <h2>LASCIA UNA RECENSIONE</h2>
             <div class="danger mb-2">* campi obbligatori</div>
-            <form @submit.prevent="sendReview">
+            <form @submit.prevent="sendReviewAndRating">
                 <!-- Input user name -->
                 <div class="mb-3">
                     <label class="form-check-label me-2" for="name-review">Nome</label>
@@ -216,6 +230,17 @@
                     </div>
                 </div>
                 <!-- Input user description -->
+
+                <!-- User rating -->
+                <select class="form-select mb-3" aria-label="Default select example" v-model="userRate">
+                    <option selected>Valuta il medico</option>
+                    <option value="1"  name="score">1</option>
+                    <option value="2"  name="score">2</option>
+                    <option value="3"  name="score">3</option>
+                    <option value="4"  name="score">4</option>
+                    <option value="5"  name="score">5</option>
+                </select>
+                <!-- /User rating -->
 
                 <!-- Accept TC -->
                 <!-- <div class="mb-3 form-check">
