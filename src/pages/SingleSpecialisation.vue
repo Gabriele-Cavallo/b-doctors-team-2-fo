@@ -65,7 +65,7 @@ export default {
                 </div>
                 <router-link :to="{ name: 'our-doctors' }" class="btn btn-brand">Ritorna</router-link>
             </div>
-            <div>Minimo Stelle</div>
+            <h4 class="py-3">Filtra per stelle!</h4>
             <div class="filter-wrapper my-3">
                 <div class="rating-stars">
                     <input type="radio" name="rating" id="rs0" v-model="minRating" value="0" ><label for="rs0"></label>
