@@ -5,36 +5,44 @@ export default {
 </script>
 
 <template>
-    <div class="container">
-        <div class="slogan">
-            <h2>Sentiti bene con BDoctors</h2>
+    <section>
+        <div class="container">
+            <div class="slogan">
+                <h2>Sentiti bene con BDoctors</h2>
+            </div>
+            <div class="d-flex justify-content-between ms-row">
+                <div class="ms-card">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <p>Prenota visite online in modo facile e veloce, per te e i tuoi familiari</p>
+                </div>
+                <div class="ms-card">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <p>Scambia messaggi con i tuoi medici in totale sicurezza</p>
+                </div>
+                <div class="ms-card">
+                    <i class="fa-regular fa-envelope"></i>
+                    <p>Scambia messaggi con i tuoi medici in totale sicurezza</p>
+                </div>
+            </div>
         </div>
-        <div class="d-flex justify-content-between ms-row">
-            <div class="ms-card">
-                <i class="fa-solid fa-calendar-days"></i>
-                <p>Prenota visite online in modo facile e veloce, per te e i tuoi familiari</p>
-            </div>
-            <div class="ms-card">
-                <i class="fa-solid fa-heart-pulse"></i>
-                <p>Scambia messaggi con i tuoi medici in totale sicurezza</p>
-            </div>
-            <div class="ms-card">
-                <i class="fa-regular fa-envelope"></i>
-                <p>Scambia messaggi con i tuoi medici in totale sicurezza</p>
-            </div>
-        </div>
-    </div>
+    </section>
 </template>
 
 <style lang="scss" scoped>
 @use '../style/partials/variables' as *;
+
+
+section{
+    color: white;
+    background-color: $primary-color;
+}
 
 h1{
     color: $primary-color;
 }
 
 .slogan{
-    margin-top: 50px;
+    padding-top: 50px;
     h2{
         text-align: center;
     }
