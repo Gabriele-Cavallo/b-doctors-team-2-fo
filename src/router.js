@@ -26,6 +26,11 @@ const router = createRouter({
             name: 'single-specialisation',
             component: SingleSpecialisation
         },
+        {
+            path: '/our-doctors/:slug',
+            name: 'single-doctor',
+            component: SingleDoctor
+        },
     ]
 });
 export { router };
