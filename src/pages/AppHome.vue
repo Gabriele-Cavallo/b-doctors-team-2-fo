@@ -1,3 +1,27 @@
+<script>
+import axios from 'axios';
+import { store } from '../store.js';
+export default {
+    data() {
+        return {
+            store,
+            specialisations: [],
+        }
+    },
+    methods: {
+        getAllSpecialisations (){
+            axios.get(`${this.store.apiUrl}/api/specialisations`)
+            .then((response) => {
+                this.specialisations = response.data.results;
+                this.loading = true;
+            })
+        },
+    },
+    mounted () {
+        this.getAllSpecialisations();
+    }
+}
+</script>
 <template>
     <div class="container-fluid custom-background">
         <div class="row justify-content-center align-items-start">
@@ -17,6 +41,11 @@
                     <img src="https://imgur.com/P5b3i9X.jpg" alt="">
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="search-bar container container-fluid d-flex gap-3 my-4 flex-wrap justify-content-center">
+        <div v-for="specialisation in specialisations" :key="specialisation.id">
+            <router-link :to="{ name: 'single-specialisation', params: { slug: specialisation.slug } }" class="btn btn-brand badge ms-badge">{{ specialisation.name }}</router-link>
         </div>
     </div>
 </template>
@@ -58,5 +87,14 @@
 
 .text-white {
     color: white;
+}
+.ms-badge{
+    background-color: $primary-color;
+}
+.btn:hover{
+    &.ms-badge{
+        background-color: $secondary-color;
+        color: $primary-color;
+    }
 }
 </style>
