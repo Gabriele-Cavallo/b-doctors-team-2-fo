@@ -1,9 +1,13 @@
 <script>
     import axios from 'axios';
     import { store } from '../store.js';
+    import AppLoader from '../components/AppLoader.vue';
 
     export default {
         name: 'AppOurDoctors',
+        components: {
+            AppLoader
+        },
         data() {
             return {
                 store,
@@ -45,7 +49,10 @@
 
 <template>
     <section>
-        <div class="container py-3">
+        <div v-if="!loading">
+            <AppLoader></AppLoader>
+        </div>
+        <div v-else class="container py-3">
             <h1>I nostri Specialisti:</h1>
             <div class="px-2 cards-wrapper row justify-content-between anchor">
                 <div v-for="specialisation in specialisations" :key="specialisation.id" class="card ms-col-6 my-3">
