@@ -38,7 +38,9 @@
                 <p><strong>Nome</strong>: {{ doctor.user.name }}</p>
                 <p><strong>Email</strong>: {{ doctor.user.email }}</p>
                 <p v-if="doctor.specialisations.length > 0" class="card-text"><strong>Specializzazioni</strong>: 
-                    <span v-for="specialisation in doctor.specialisations">{{ specialisation.name }} &nbsp;</span>
+                    <span v-for="(specialisation, index) in doctor.specialisations" :key="specialisation.id">
+                        {{ specialisation.name }}<span v-if="index < doctor.specialisations.length - 1">,</span> &nbsp;
+                    </span>
                 </p>
                 <p><strong>Performance</strong>: {{ doctor.performance }}</p>
                 <p><strong>Telefono</strong>: {{ doctor.telephone_number }}</p>
