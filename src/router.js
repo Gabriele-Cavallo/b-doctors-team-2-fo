@@ -3,6 +3,8 @@ import AppHome from './pages/AppHome.vue';
 import AppAbout from './pages/AppAbout.vue';
 import AppOurDoctors from './pages/AppOurDoctors.vue';
 import SingleSpecialisation from './pages/SingleSpecialisation.vue';
+import SingleDoctor from './pages/SingleDoctor.vue';
+
 const router = createRouter({   
     history: createWebHistory(),
     routes: [
@@ -25,6 +27,11 @@ const router = createRouter({
             path: '/our-doctors/:slug',
             name: 'single-specialisation',
             component: SingleSpecialisation
+        },
+        {
+            path: '/our-doctors/:slug',
+            name: 'single-doctor',
+            component: SingleDoctor
         },
     ]
 });

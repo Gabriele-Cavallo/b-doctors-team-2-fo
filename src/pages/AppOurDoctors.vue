@@ -43,7 +43,7 @@
 <template>
     <section>
         <div class="container py-3">
-            <h1>ECCO I NOSTRI DOTTORI:</h1>
+            <h1>I nostri Specialisti:</h1>
             <div class="px-2 cards-wrapper row justify-content-between anchor">
                 <div v-for="specialisation in specialisations" :key="specialisation.id" class="card ms-col-6 my-3">
                     <div class="show-more my-2">
