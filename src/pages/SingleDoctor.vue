@@ -64,8 +64,8 @@
             background-color: $secondary-color;
         }
         .profile-photo {
-            max-height: 100px;
-            max-width: 100px;
+            max-height: 300px;
+            max-width: 300px;
             border-radius: 20px;
             object-fit: cover;
         }
