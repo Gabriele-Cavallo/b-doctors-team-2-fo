@@ -4,6 +4,8 @@ import AppAbout from './pages/AppAbout.vue';
 import AppOurDoctors from './pages/AppOurDoctors.vue';
 import SingleSpecialisation from './pages/SingleSpecialisation.vue';
 import SingleDoctor from './pages/SingleDoctor.vue';
+import AppTermsAndConditionsMessages from './pages/AppTermsAndConditionsMessages.vue';
+import AppTermsAndConditionsRatings from './pages/AppTermsAndConditionsRatings.vue';
 
 const router = createRouter({   
     history: createWebHistory(),
@@ -32,6 +34,16 @@ const router = createRouter({
             path: '/our-doctors/:slug',
             name: 'single-doctor',
             component: SingleDoctor
+        },
+        {
+            path: '/terms-and-conditions-messages',
+            name: 'terms-and-conditions-messages',
+            component: AppTermsAndConditionsMessages
+        },
+        {
+            path: '/terms-and-conditions-ratings',
+            name: 'terms-and-conditions-ratings',
+            component: AppTermsAndConditionsRatings
         },
     ]
 });
