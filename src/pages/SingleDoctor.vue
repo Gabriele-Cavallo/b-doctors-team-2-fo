@@ -26,6 +26,7 @@
                 userTcReview: '',
                 userRate: '',
                 doctorID: '',
+                ratingID: '',
             }
         },
         methods: {
@@ -60,7 +61,6 @@
                         this.userMessage = '';
                         this.userObject = '';
                         this.userTc = '';
-                        this.doctorID = '';
                     } else {
                         this.errors = response.data.errors;
                     }
@@ -74,41 +74,46 @@
                 };
                 axios.post(`${this.store.apiUrl}/api/ratings`, userRate)
                 .then(response => {
-                    if(response.data.success) {
+                    if(response.data.success) { 
+                        console.log('response' , response.data.data.id);
+                        this.ratingID = response.data.data.id;
                         this.errors = {},
                         this.userRate = '';
                     } else {
                         this.errors = response.data.errors;
                     }
+                    const userReview = {
+                        name: this.userNameReview,
+                        description: this.userMessageReview,
+                        profile_id: this.doctorID,
+                        rating_id: this.ratingID,
+                        // accepted_tc: this.userTcReview
+                    };
+    
+                    this.submitReview = true;
+    
+                        axios.post(`${this.store.apiUrl}/api/reviews`, userReview)
+                        .then(response => {
+                            if(response.data.success) {
+                                this.errors = {},
+                                this.userNameReview = '';
+                                this.userMessageReview = '';
+                                this.ratingID = '';
+                                // this.userTcReview = '';
+                            } else {
+                                this.errors = response.data.errors;
+                            }
+                            this.submitReview = false;
+                        })
                 })
 
-                const userReview = {
-                    name: this.userNameReview,
-                    description: this.userMessageReview,
-                    profile_id: this.doctorID,
-                    // accepted_tc: this.userTcReview
-                };
 
-                this.submitReview = true;
 
-                axios.post(`${this.store.apiUrl}/api/reviews`, userReview)
-                .then(response => {
-                    if(response.data.success) {
-                        this.errors = {},
-                        this.userNameReview = '';
-                        this.userMessageReview = '';
-                        this.doctorID = '';
-                        // this.userTcReview = '';
-                    } else {
-                        this.errors = response.data.errors;
-                    }
-                    this.submitReview = false;
-                })
             },
         },
         mounted() {
             this.getSingleDoctor();
-        }
+        },
     }
 </script>
 
@@ -216,7 +221,7 @@
     
             <!-- Form recensione dottore -->
             <div class="review-wrapper container p-2">
-                <h2>LASCIA UNA RECENSIONE</h2>
+                <h2>Scrivi una recensione</h2>
                 <div class="danger mb-2">* campi obbligatori</div>
                 <form @submit.prevent="sendReviewAndRating">
                     <!-- Input user name -->
