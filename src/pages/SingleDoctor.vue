@@ -24,7 +24,8 @@
                 submitReview: false,
                 userTc: '',
                 userTcReview: '',
-                userRate: ''
+                userRate: '',
+                doctorID: '',
             }
         },
         methods: {
@@ -32,6 +33,7 @@
             getSingleDoctor() {
                 axios.get(`${this.store.apiUrl}/api/profiles/${this.$route.params.slug}`)
                 .then((response) => {
+                    this.doctorID = response.data.profile.id;
                     this.doctor = response.data.profile;
                     this.loading = true;
                 })
@@ -43,7 +45,8 @@
                     email: this.userEmail,
                     message: this.userMessage,
                     object: this.userObject,
-                    accepted_tc: this.userTc
+                    accepted_tc: this.userTc,
+                    profile_id: this.doctorID,
                 };
 
                 this.submit = true;
@@ -57,6 +60,7 @@
                         this.userMessage = '';
                         this.userObject = '';
                         this.userTc = '';
+                        this.doctorID = '';
                     } else {
                         this.errors = response.data.errors;
                     }
@@ -81,6 +85,7 @@
                 const userReview = {
                     name: this.userNameReview,
                     description: this.userMessageReview,
+                    profile_id: this.doctorID,
                     // accepted_tc: this.userTcReview
                 };
 
@@ -92,6 +97,7 @@
                         this.errors = {},
                         this.userNameReview = '';
                         this.userMessageReview = '';
+                        this.doctorID = '';
                         // this.userTcReview = '';
                     } else {
                         this.errors = response.data.errors;
