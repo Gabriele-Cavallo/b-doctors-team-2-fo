@@ -82,31 +82,32 @@
                     } else {
                         this.errors = response.data.errors;
                     }
+                    const userReview = {
+                        name: this.userNameReview,
+                        description: this.userMessageReview,
+                        profile_id: this.doctorID,
+                        rating_id: this.ratingID,
+                        // accepted_tc: this.userTcReview
+                    };
+    
+                    this.submitReview = true;
+    
+                        axios.post(`${this.store.apiUrl}/api/reviews`, userReview)
+                        .then(response => {
+                            if(response.data.success) {
+                                this.errors = {},
+                                this.userNameReview = '';
+                                this.userMessageReview = '';
+                                // this.userTcReview = '';
+                            } else {
+                                this.errors = response.data.errors;
+                            }
+                            this.submitReview = false;
+                        })
                 })
 
 
-                const userReview = {
-                    name: this.userNameReview,
-                    description: this.userMessageReview,
-                    profile_id: this.doctorID,
-                    rating_id: this.ratingID,
-                    // accepted_tc: this.userTcReview
-                };
 
-                this.submitReview = true;
-
-                axios.post(`${this.store.apiUrl}/api/reviews`, userReview)
-                .then(response => {
-                    if(response.data.success) {
-                        this.errors = {},
-                        this.userNameReview = '';
-                        this.userMessageReview = '';
-                        // this.userTcReview = '';
-                    } else {
-                        this.errors = response.data.errors;
-                    }
-                    this.submitReview = false;
-                })
             },
         },
         mounted() {
