@@ -60,7 +60,7 @@
                         this.userMessage = '';
                         this.userObject = '';
                         this.userTc = '';
-                        this.doctorID = '';
+
                     } else {
                         this.errors = response.data.errors;
                     }
@@ -97,7 +97,7 @@
                         this.errors = {},
                         this.userNameReview = '';
                         this.userMessageReview = '';
-                        this.doctorID = '';
+                
                         // this.userTcReview = '';
                     } else {
                         this.errors = response.data.errors;
