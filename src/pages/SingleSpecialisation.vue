@@ -1,9 +1,14 @@
 <script>
 import axios from 'axios';
 import { store } from '../store.js';
+import AppLoader from '../components/AppLoader.vue';
+
 
 export default {
     name: 'SingleSpecialisation',
+    components: {
+        AppLoader
+    },
     data() {
         return {
             store,
@@ -58,7 +63,10 @@ export default {
 
 <template>
     <section>
-        <div class="container py-3">
+        <div v-if="!loading" class="container py-3">
+            <AppLoader></AppLoader>
+        </div>
+        <div v-else class="container py-3">
             <div class="wrapper d-flex align-items-center justify-content-between">
                 <div v-if="loading">
                     <h1>{{ doctors[0]?.spec_name }}</h1>
