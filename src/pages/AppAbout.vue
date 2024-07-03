@@ -91,6 +91,9 @@ h1{
         font-size: 80px;
         margin-bottom: 20px;
     }
+    i:hover{
+        color: $primary-color;
+    }
     h2{
         font-size: 39px;
     }
