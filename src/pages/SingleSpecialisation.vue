@@ -19,6 +19,8 @@ export default {
             searchQuery: '',
             filterByRating: false,
             noDoctorsFound: false,
+            review: '',
+            reviewCount: '',
         }
     },
     methods: {
@@ -29,6 +31,20 @@ export default {
                 this.filteredDoctors = this.doctors;
                 this.loading = true;
                 this.filterDoctors();
+            })
+        },
+        getSingleReview(index) {
+            axios.get(`${this.store.apiUrl}/api/reviews`)
+            .then(response => {
+                console.log('review' , response.data.reviews[index]);
+                // this.review = response.data.results[index].average_score;
+                return this.review;
+            })
+        },
+        getReviewsCount() {
+            axios.get(`${this.store.apiUrl}/api/reviewscount`)
+            .then(response => {
+                this.reviewCount = response.data.results[0].review_count;
             })
         },
         filterDoctors() {
@@ -57,6 +73,8 @@ export default {
     },
     mounted() {
         this.getSingleSpecialisation();
+        // this.getSingleReview();
+        // this.getReviewsCount();
     }
 }
 </script>
@@ -97,7 +115,7 @@ export default {
             <!-- <div v-if="noDoctorsFound" class="no-doctors-found my-4">
                 <p style="color: red;">Nessun dottore trovato con questi criteri di ricerca</p>
             </div> -->
-            <div v-for="doctor in filteredDoctors" class="doctors-wrapper card my-4 p-3" :key="doctor.user_slug">
+            <div v-for="doctor, index in filteredDoctors" class="doctors-wrapper card my-4 p-3" :key="doctor.user_slug">
                 <div class="card-wrapper d-flex align-items-center">
                     <div class="img-wrapper me-3">
                         <img v-if="doctor.photo" :src="`http://127.0.0.1:8000/storage/${doctor.photo}`" :alt="doctor.user_name">
@@ -108,7 +126,8 @@ export default {
                         <p><strong>Specializzazione</strong>: {{ doctor.spec_name }}</p>
                         <p><strong>Performance</strong>: {{ doctor.performance }}</p>
                         <p><strong>Telefono</strong>: {{ doctor.telephone_number }}</p>
-                        <p><strong>Rating</strong>: {{ doctor.rating }}</p>
+                        <p><strong>Rating</strong>: {{ getSingleReview(index) }}</p>
+                        <p><strong>Numero recensioni</strong>: {{ reviewCount }}</p>
                         <router-link :to="{ name: 'single-doctor', params: { slug: doctor.user_slug } }" class="btn btn-brand">Mostra dottore</router-link>
                     </div>
                 </div>
