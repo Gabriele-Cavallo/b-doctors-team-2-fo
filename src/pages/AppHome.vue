@@ -48,6 +48,13 @@ export default {
             <router-link :to="{ name: 'single-specialisation', params: { slug: specialisation.slug } }" class="btn btn-brand badge ms-badge">{{ specialisation.name }}</router-link>
         </div>
     </div>
+
+
+    <footer>
+        <div>
+            <p>© 2024 BDoctors. Tutti i diritti riservati. Le informazioni fornite su questo sito, comprese le prenotazioni delle visite mediche, i messaggi al medico e le recensioni, sono a scopo informativo e non sostituiscono il consiglio medico professionale.</p>
+        </div>
+        </footer>
 </template>
 
 <style lang="scss" scoped>
@@ -95,6 +102,16 @@ export default {
     &.ms-badge{
         background-color: $secondary-color;
         color: $primary-color;
+    }
+}
+
+footer{
+    text-align: center;
+    margin: 0 auto;
+    width: 700px;
+    padding: 100px 0 10px 0;
+    p{
+        border-top: 2px solid rgba(0, 0, 0, 0.522);
     }
 }
 </style>
