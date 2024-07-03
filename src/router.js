@@ -7,7 +7,7 @@ import SingleDoctor from './pages/SingleDoctor.vue';
 import AppTermsAndConditionsMessages from './pages/AppTermsAndConditionsMessages.vue';
 import AppTermsAndConditionsRatings from './pages/AppTermsAndConditionsRatings.vue';
 
-const router = createRouter({   
+const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
@@ -26,7 +26,7 @@ const router = createRouter({
             component: AppOurDoctors
         },
         {
-            path: '/our-doctors/:slug',
+            path: '/specialisation/:slug',
             name: 'single-specialisation',
             component: SingleSpecialisation
         },

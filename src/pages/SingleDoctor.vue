@@ -112,7 +112,7 @@
         },
         mounted() {
             this.getSingleDoctor();
-        }
+        },
     }
 </script>
 
@@ -220,7 +220,7 @@
     
             <!-- Form recensione dottore -->
             <div class="review-wrapper container p-2">
-                <h2>LASCIA UNA RECENSIONE</h2>
+                <h2>Scrivi una recensione</h2>
                 <div class="danger mb-2">* campi obbligatori</div>
                 <form @submit.prevent="sendReviewAndRating">
                     <!-- Input user name -->
