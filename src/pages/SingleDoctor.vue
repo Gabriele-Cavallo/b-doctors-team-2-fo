@@ -98,6 +98,7 @@
                                 this.errors = {},
                                 this.userNameReview = '';
                                 this.userMessageReview = '';
+                                this.ratingID = '';
                                 // this.userTcReview = '';
                             } else {
                                 this.errors = response.data.errors;
