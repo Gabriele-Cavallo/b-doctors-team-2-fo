@@ -26,6 +26,7 @@
                 userTcReview: '',
                 userRate: '',
                 doctorID: '',
+                ratingID: '',
             }
         },
         methods: {
@@ -60,7 +61,6 @@
                         this.userMessage = '';
                         this.userObject = '';
                         this.userTc = '';
-                        this.doctorID = '';
                     } else {
                         this.errors = response.data.errors;
                     }
@@ -74,7 +74,9 @@
                 };
                 axios.post(`${this.store.apiUrl}/api/ratings`, userRate)
                 .then(response => {
-                    if(response.data.success) {
+                    if(response.data.success) { 
+                        console.log('response' , response.data.data.id);
+                        this.ratingID = response.data.data.id;
                         this.errors = {},
                         this.userRate = '';
                     } else {
@@ -82,10 +84,12 @@
                     }
                 })
 
+
                 const userReview = {
                     name: this.userNameReview,
                     description: this.userMessageReview,
                     profile_id: this.doctorID,
+                    rating_id: this.ratingID,
                     // accepted_tc: this.userTcReview
                 };
 
@@ -97,7 +101,6 @@
                         this.errors = {},
                         this.userNameReview = '';
                         this.userMessageReview = '';
-                        this.doctorID = '';
                         // this.userTcReview = '';
                     } else {
                         this.errors = response.data.errors;
