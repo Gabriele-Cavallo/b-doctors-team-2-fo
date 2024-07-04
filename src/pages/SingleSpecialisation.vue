@@ -114,9 +114,9 @@ export default {
             <!-- <div v-if="noDoctorsFound" class="no-doctors-found my-4">
                 <p style="color: red;">Nessun dottore trovato con questi criteri di ricerca</p>
             </div> -->
-            <div v-for="doctor in filteredDoctors" class="doctors-wrapper card my-4 p-3" :key="doctor.user_slug">
+            <div v-for="doctor in filteredDoctors" :key="doctor.user_slug">
                 <div v-if="doctor.visibility">
-                    <div class="card-wrapper d-flex align-items-center">
+                    <div class="card-wrapper d-flex align-items-center doctors-wrapper card my-4 p-3">
                         <div class="img-wrapper me-3">
                             <img v-if="doctor.photo" :src="`http://127.0.0.1:8000/storage/${doctor.photo}`" :alt="doctor.user_name">
                         </div>
@@ -145,6 +145,9 @@ export default {
 section {
     background-color: $primary-color;
     color: white;
+    .card.card-wrapper{
+        flex-direction: row;
+    }
     .btn-brand {
         color: $primary-color;
         background-color: $secondary-color;
