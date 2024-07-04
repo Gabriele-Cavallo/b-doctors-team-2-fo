@@ -41,12 +41,13 @@ export default {
             this.highlightStars(rating);
         },
         highlightStars(rating) {
-            const labels = document.querySelectorAll('.rating-stars label');
-            labels.forEach((label, index) => {
-                if (index + 1 <= rating) {
-                    label.classList.add('highlighted');
+            const inputs = document.querySelectorAll('.rating-stars input');
+            inputs.forEach((input, index) => {
+                if (index >= rating) {
+                    input.classList.add('highlighted');
+                    input.classList.add('pippo');
                 } else {
-                    label.classList.remove('highlighted');
+                    input.classList.remove('highlighted');
                 }
             });
         }
