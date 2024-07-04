@@ -29,6 +29,7 @@
                 ratingID: '',
                 messageSuccess: false,
                 reviewSuccess: false,
+                minRating: 0,
             }
         },
         methods: {
@@ -115,16 +116,50 @@
                             }
                             this.submitReview = false;
                         })
+                        
                 })
 
-
+                
 
             },
+            resetRating() {
+            this.minRating = 0;
+            this.highlightStars(0);
         },
+        setRating(rating) {
+            this.minRating = rating;
+            this.highlightStars(rating);
+        },
+        highlightStars(rating) {
+            const labels = document.querySelectorAll('.rating-stars label');
+            labels.forEach((label, index) => {
+                if (rating >= 3) {
+                    if (index + 1 >= 3 && index + 1 <= rating) {
+                        label.classList.add('highlighted');
+                    } else if (index + 1 >= 3) {
+                        label.classList.remove('highlighted');
+                    }
+                } else {
+                    if (index + 1 <= rating) {
+                        label.classList.add('highlighted');
+                    } else {
+                        label.classList.remove('highlighted');
+                    }
+                }
+            });
+        },
+    },
+    watch: {
+        minRating: 'filterDoctors',
+        searchQuery: 'filterDoctors',
+        filterByRating: 'filterDoctors'
+    },
+
         mounted() {
             this.getSingleDoctor();
         },
     }
+    
 </script>
 
 <template>
@@ -267,14 +302,17 @@
                     <!-- Input user description -->
     
                     <!-- User rating -->
-                    <select class="form-select mb-3" aria-label="Default select example" v-model="userRate">
-                        <option selected>Valuta il medico</option>
-                        <option value="1"  name="score">1</option>
-                        <option value="2"  name="score">2</option>
-                        <option value="3"  name="score">3</option>
-                        <option value="4"  name="score">4</option>
-                        <option value="5"  name="score">5</option>
-                    </select>
+                    <div class="filter-wrapper my-3">
+                <div class="rating-stars">
+                    <input type="radio" name="rating" id="rs0" v-model="minRating" value="0" ><label for="rs0"></label>
+                    <input type="radio" name="rating" id="rs1" v-model="minRating" value="1" @click="setRating(0)"><label for="rs1"></label>
+                    <input type="radio" name="rating" id="rs2" v-model="minRating" value="2" @click="setRating(2)"><label for="rs2"></label>
+                    <input type="radio" name="rating" id="rs3" v-model="minRating" value="3" @click="setRating(3)"><label for="rs3"></label>
+                    <input type="radio" name="rating" id="rs4" v-model="minRating" value="4" @click="setRating(4)"><label for="rs4"></label>
+                    <input type="radio" name="rating" id="rs5" v-model="minRating" value="5" @click="setRating(5)"><label for="rs5"></label>
+                    <button @click="resetRating" class="btn btn-brand ms-3">Reset</button>
+                </div>
+            </div>
                     <!-- /User rating -->
     
                     <!-- Accept TC -->
@@ -339,5 +377,90 @@
         .danger{
             color:red;
         }
+
+        .rating-stars {
+    display: block;
+    width: 50vmin;
+    padding: 1px 1px 2px 3px;
+    border-radius: 5vmin 5vmin 5vmin 5vmin;
+    position: relative;
+}
+
+.rating-stars input {
+    display: none;
+}
+
+.rating-stars label {
+    width: 20px;
+    height: 20px;
+    background: #000b;
+    display: inline-flex;
+    cursor: pointer;
+    margin: 0.5vmin 0.65vmin;
+    transition: all 1s ease 0s;
+    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
+}
+
+.rating-stars label[for=rs0] {
+    display: none;
+}
+
+.rating-stars label:before {
+    width: 90%;
+    height: 90%;
+    content: "";
+    background: orange;
+    z-index: -1;
+    display: block;
+    margin-left: 5%;
+    margin-top: 5%;
+    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
+    background: linear-gradient(90deg, yellow, orange 30% 50%, #184580 50%, 70%, #173a75 100%);
+    background-size: 205% 100%;
+    background-position: 0 0;
+}
+
+.rating-stars label:hover:before {
+    transition: all 0.25s ease 0s;
+}
+
+.rating-stars input:checked + label ~ label:before {
+    background-position: 100% 0;
+    transition: all 0.25s ease 0s;
+}
+
+.rating-stars input:checked + label ~ label:hover:before {
+    background-position: 0% 0;
+}
+
+.rating-stars .highlighted {
+    background-position: 100% 0 !important;
+}
+
+.rating-stars label[for=rs1]:hover ~ .rating-counter:before {
+    content: "1" !important;
+}
+
+.rating-stars label[for=rs2]:hover ~ .rating-counter:before {
+    content: "2" !important;
+}
+
+.rating-stars label[for=rs3]:hover ~ .rating-counter:before {
+    content: "3" !important;
+}
+
+.rating-stars label[for=rs4]:hover ~ .rating-counter:before {
+    content: "4" !important;
+}
+
+.rating-stars label[for=rs5]:hover ~ .rating-counter:before {
+    content: "5" !important;
+}
+
+.rating-stars input:checked:hover ~ .rating-counter:before {
+    animation: none !important;
+    color: #ffab00 !important;
+}
+
     }
 </style>

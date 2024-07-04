@@ -3,7 +3,6 @@ import axios from 'axios';
 import { store } from '../store.js';
 import AppLoader from '../components/AppLoader.vue';
 
-
 export default {
     name: 'SingleSpecialisation',
     components: {
@@ -70,10 +69,18 @@ export default {
         highlightStars(rating) {
             const labels = document.querySelectorAll('.rating-stars label');
             labels.forEach((label, index) => {
-                if (index + 1 <= rating) {
-                    label.classList.add('highlighted');
+                if (rating >= 3) {
+                    if (index + 1 >= 3 && index + 1 <= rating) {
+                        label.classList.add('highlighted');
+                    } else if (index + 1 >= 3) {
+                        label.classList.remove('highlighted');
+                    }
                 } else {
-                    label.classList.remove('highlighted');
+                    if (index + 1 <= rating) {
+                        label.classList.add('highlighted');
+                    } else {
+                        label.classList.remove('highlighted');
+                    }
                 }
             });
         }
@@ -85,8 +92,6 @@ export default {
     },
     mounted() {
         this.getSingleSpecialisation();
-        // this.getSingleReview();
-        // this.getReviewsCount();
     }
 }
 </script>
