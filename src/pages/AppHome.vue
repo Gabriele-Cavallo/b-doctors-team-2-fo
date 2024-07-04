@@ -16,6 +16,21 @@ export default {
                 this.loading = true;
             })
         },
+        submitForm() {
+            const form = document.getElementById('filterForm');
+            const formData = new FormData(form);
+            const params = new URLSearchParams();
+            for (const pair of formData.entries()) {
+                params.append(pair[0], pair[1]);
+            }
+            axios.get(`${this.store.apiUrl}/api/filter-results`, { params: params })
+                .then((response) => {
+                    window.location.href = response.data.url;
+                })
+                .catch(error => {
+                    console.error('There was an error!', error);
+                });
+        }
     },
     mounted () {
         this.getAllSpecialisations();
@@ -43,10 +58,26 @@ export default {
             </div>
         </div>
     </div>
-    <div class="search-bar container d-flex gap-3 my-4 flex-wrap justify-content-center">
-        <div v-for="specialisation in specialisations" :key="specialisation.id">
-            <router-link :to="{ name: 'single-specialisation', params: { slug: specialisation.slug } }" class="btn btn-brand badge ms-badge">{{ specialisation.name }}</router-link>
-        </div>
+    <div class="search-bar container">
+        <form class="d-flex gap-3 my-4 flex-wrap justify-content-center" id="filterForm" @submit.prevent="submitForm">
+            <div v-for="specialisation in specialisations" :key="specialisation.id">
+                <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
+                <input type="checkbox" :name="`specialisation`" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
+                <!-- <router-link :to="{ name: 'single-specialisation', params: { slug: specialisation.slug } }" class="btn btn-brand badge ms-badge">{{ specialisation.name }}</router-link> -->
+            </div>
+            <div class="filter-wrapper my-3">
+                <div class="rating-stars">
+                    <input type="radio" name="rating" id="rs0" v-model="minRating" value="0" ><label for="rs0"></label>
+                    <input type="radio" name="rating" id="rs1" v-model="minRating" value="1" @click="resetRating"><label for="rs1"></label>
+                    <input type="radio" name="rating" id="rs2" v-model="minRating" value="2" @click="resetRating"><label for="rs2"></label>
+                    <input type="radio" name="rating" id="rs3" v-model="minRating" value="3" @click="resetRating"><label for="rs3"></label>
+                    <input type="radio" name="rating" id="rs4" v-model="minRating" value="4" @click="resetRating"><label for="rs4"></label>
+                    <input type="radio" name="rating" id="rs5" v-model="minRating" value="5" @click="resetRating"><label for="rs5"></label>
+                    <button @click="resetRating" class="btn btn-brand ms-3">Reset</button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-brand">Cerca Medico</button>
+        </form>
     </div>
 
 
