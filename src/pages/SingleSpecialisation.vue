@@ -38,8 +38,6 @@ export default {
                 })
             })
         },
-        // getSingleReview() {
-        // },
         getReviewsCount() {
             axios.get(`${this.store.apiUrl}/api/reviewscount`)
             .then(response => {
@@ -63,6 +61,21 @@ export default {
         },
         resetRating() {
             this.minRating = 0;
+            this.highlightStars(0);
+        },
+        setRating(rating) {
+            this.minRating = rating;
+            this.highlightStars(rating);
+        },
+        highlightStars(rating) {
+            const labels = document.querySelectorAll('.rating-stars label');
+            labels.forEach((label, index) => {
+                if (index + 1 <= rating) {
+                    label.classList.add('highlighted');
+                } else {
+                    label.classList.remove('highlighted');
+                }
+            });
         }
     },
     watch: {
@@ -94,44 +107,30 @@ export default {
             <div class="filter-wrapper my-3">
                 <div class="rating-stars">
                     <input type="radio" name="rating" id="rs0" v-model="minRating" value="0" ><label for="rs0"></label>
-                    <input type="radio" name="rating" id="rs1" v-model="minRating" value="1" @click="resetRating"><label for="rs1"></label>
-                    <input type="radio" name="rating" id="rs2" v-model="minRating" value="2" @click="resetRating"><label for="rs2"></label>
-                    <input type="radio" name="rating" id="rs3" v-model="minRating" value="3" @click="resetRating"><label for="rs3"></label>
-                    <input type="radio" name="rating" id="rs4" v-model="minRating" value="4" @click="resetRating"><label for="rs4"></label>
-                    <input type="radio" name="rating" id="rs5" v-model="minRating" value="5" @click="resetRating"><label for="rs5"></label>
+                    <input type="radio" name="rating" id="rs1" v-model="minRating" value="1" @click="setRating(0)"><label for="rs1"></label>
+                    <input type="radio" name="rating" id="rs2" v-model="minRating" value="2" @click="setRating(2)"><label for="rs2"></label>
+                    <input type="radio" name="rating" id="rs3" v-model="minRating" value="3" @click="setRating(3)"><label for="rs3"></label>
+                    <input type="radio" name="rating" id="rs4" v-model="minRating" value="4" @click="setRating(4)"><label for="rs4"></label>
+                    <input type="radio" name="rating" id="rs5" v-model="minRating" value="5" @click="setRating(5)"><label for="rs5"></label>
                     <button @click="resetRating" class="btn btn-brand ms-3">Reset</button>
                 </div>
-              
             </div>
-            <!-- <div class="search-wrapper my-3">
-                <label for="searchQuery">Cerca dottore:</label>
-                <input type="text" v-model="searchQuery" id="searchQuery" placeholder="Inserisci nome">
-            </div> -->
-            <!-- <div class="checkbox-wrapper my-3">
-                <label for="filterByRating">Filtra per rating da 1 a 5:</label>
-                <input type="checkbox" v-model="filterByRating" id="filterByRating">
-            </div> -->
-            <!-- <div v-if="noDoctorsFound" class="no-doctors-found my-4">
-                <p style="color: red;">Nessun dottore trovato con questi criteri di ricerca</p>
-            </div> -->
-            <div v-for="doctor in filteredDoctors" :key="doctor.user_slug">
-                <div v-if="doctor.visibility">
-                    <div class="card-wrapper d-flex align-items-center doctors-wrapper card my-4 p-3">
-                        <div class="img-wrapper me-3">
-                            <img v-if="doctor.photo" :src="`http://127.0.0.1:8000/storage/${doctor.photo}`" :alt="doctor.user_name">
-                        </div>
-                        <div class="info-wrapper">
-                            <p><strong>Nome</strong>: {{ doctor.user_name }}</p>
-                            <p><strong>Email</strong>: {{ doctor.user_mail }}</p>
-                            <p><strong>Specializzazione</strong>: {{ doctor.spec_name }}</p>
-                            <p><strong>Performance</strong>: {{ doctor.performance }}</p>
-                            <p><strong>Telefono</strong>: {{ doctor.telephone_number }}</p>
-                            <p v-for="review in reviews">
-                                <p v-if="review.profile_id === doctor.id"><strong>Rating</strong>: {{ review.average_score }}</p>
-                            </p>
-                            <p><strong>Numero recensioni</strong>: {{ reviewCount }}</p>
-                            <router-link :to="{ name: 'single-doctor', params: { slug: doctor.user_slug } }" class="btn btn-brand">Mostra dottore</router-link>
-                        </div>
+            <div v-for="doctor in filteredDoctors" class="doctors-wrapper card my-4 p-3" :key="doctor.user_slug">
+                <div class="card-wrapper d-flex align-items-center">
+                    <div class="img-wrapper me-3">
+                        <img v-if="doctor.photo" :src="`http://127.0.0.1:8000/storage/${doctor.photo}`" :alt="doctor.user_name">
+                    </div>
+                    <div class="info-wrapper">
+                        <p><strong>Nome</strong>: {{ doctor.user_name }}</p>
+                        <p><strong>Email</strong>: {{ doctor.user_mail }}</p>
+                        <p><strong>Specializzazione</strong>: {{ doctor.spec_name }}</p>
+                        <p><strong>Performance</strong>: {{ doctor.performance }}</p>
+                        <p><strong>Telefono</strong>: {{ doctor.telephone_number }}</p>
+                        <p v-for="review in reviews">
+                            <p v-if="review.profile_id === doctor.id"><strong>Rating</strong>: {{ review.average_score }}</p>
+                        </p>
+                        <p><strong>Numero recensioni</strong>: {{ reviewCount }}</p>
+                        <router-link :to="{ name: 'single-doctor', params: { slug: doctor.user_slug } }" class="btn btn-brand">Mostra dottore</router-link>
                     </div>
                 </div>
             </div>
@@ -145,9 +144,6 @@ export default {
 section {
     background-color: $primary-color;
     color: white;
-    .card.card-wrapper{
-        flex-direction: row;
-    }
     .btn-brand {
         color: $primary-color;
         background-color: $secondary-color;
@@ -174,118 +170,86 @@ section {
 }
 
 .rating-stars {
-	display: block;
-	width: 50vmin;
-	padding: 1px 1px 2px 3px;
-    border-radius: 5vmin  5vmin 5vmin 5vmin ;
-	position: relative;
+    display: block;
+    width: 50vmin;
+    padding: 1px 1px 2px 3px;
+    border-radius: 5vmin 5vmin 5vmin 5vmin;
+    position: relative;
 }
 
-
-input { 
+.rating-stars input {
     display: none;
 }
 
-label {
-	width: 20px;
-	height: 20px;
-	background: #000b;
-	display: inline-flex;
-	cursor: pointer;
-	margin: 0.5vmin 0.65vmin;
-	transition: all 1s ease 0s;	
-	clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
+.rating-stars label {
+    width: 20px;
+    height: 20px;
+    background: #000b;
+    display: inline-flex;
+    cursor: pointer;
+    margin: 0.5vmin 0.65vmin;
+    transition: all 1s ease 0s;
+    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
 }
 
-label[for=rs0] {
-	display: none;
+.rating-stars label[for=rs0] {
+    display: none;
 }
 
-label:before {
-	width: 90%;
-	height: 90%;
-	content: "";
-	background: orange;
-	z-index: -1;
-	display: block;
-	margin-left: 5%;
-	margin-top: 5%;
-	clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
-	background: linear-gradient(90deg, yellow, orange 30% 50%, #184580 50%, 70%, #173a75 100%);
-	background-size: 205% 100%;
-	background-position: 0 0;
+.rating-stars label:before {
+    width: 90%;
+    height: 90%;
+    content: "";
+    background: orange;
+    z-index: -1;
+    display: block;
+    margin-left: 5%;
+    margin-top: 5%;
+    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
+    background: linear-gradient(90deg, yellow, orange 30% 50%, #184580 50%, 70%, #173a75 100%);
+    background-size: 205% 100%;
+    background-position: 0 0;
 }
 
-label:hover:before {
-	transition: all 0.25s ease 0s;		
+.rating-stars label:hover:before {
+    transition: all 0.25s ease 0s;
 }
 
-input:checked + label ~ label:before {
-	background-position: 100% 0;
-	transition: all 0.25s ease 0s;	
+.rating-stars input:checked + label ~ label:before {
+    background-position: 100% 0;
+    transition: all 0.25s ease 0s;
 }
 
-input:checked + label ~ label:hover:before {
-	background-position: 0% 0
+.rating-stars input:checked + label ~ label:hover:before {
+    background-position: 0% 0;
 }
 
-#rs1:checked ~ .rating-counter:before {
-	content: "1";
+.rating-stars .highlighted {
+    background-position: 100% 0 !important;
 }
 
-#rs2:checked ~ .rating-counter:before {
-	content: "2";
+.rating-stars label[for=rs1]:hover ~ .rating-counter:before {
+    content: "1" !important;
 }
 
-#rs3:checked ~ .rating-counter:before {
-	content: "3";
+.rating-stars label[for=rs2]:hover ~ .rating-counter:before {
+    content: "2" !important;
 }
 
-#rs4:checked ~ .rating-counter:before {
-	content: "4";
+.rating-stars label[for=rs3]:hover ~ .rating-counter:before {
+    content: "3" !important;
 }
 
-#rs5:checked ~ .rating-counter:before {
-	content: "5";
+.rating-stars label[for=rs4]:hover ~ .rating-counter:before {
+    content: "4" !important;
 }
 
-label + input:checked ~ .rating-counter:before {
-	color: #ffab00 !important;
-	transition: all 0.25s ease 0s;
+.rating-stars label[for=rs5]:hover ~ .rating-counter:before {
+    content: "5" !important;
 }
 
-label:hover ~ .rating-counter:before {
-	color: #9aacc6 !important;
-	transition: all 0.5s ease 0s;	
-	animation: pulse 1s ease 0s infinite;
-}
-
-@keyframes pulse {
-	  50% { font-size: 6.25vmin; }
-}
-
-label[for=rs1]:hover ~ .rating-counter:before {
-	content: "1" !important;
-}
-
-label[for=rs2]:hover ~ .rating-counter:before {
-	content: "2" !important;
-}
-
-label[for=rs3]:hover ~ .rating-counter:before {
-	content: "3" !important;
-}
-
-label[for=rs4]:hover ~ .rating-counter:before {
-	content: "4" !important;
-}
-
-label[for=rs5]:hover ~ .rating-counter:before {
-	content: "5" !important;
-}
-
-input:checked:hover ~ .rating-counter:before {
-	animation: none !important;
-	color: #ffab00 !important ;
+.rating-stars input:checked:hover ~ .rating-counter:before {
+    animation: none !important;
+    color: #ffab00 !important;
 }
 </style>
