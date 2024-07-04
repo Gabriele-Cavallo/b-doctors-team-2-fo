@@ -27,6 +27,8 @@
                 userRate: '',
                 doctorID: '',
                 ratingID: '',
+                messageSuccess: false,
+                reviewSuccess: false,
             }
         },
         methods: {
@@ -54,6 +56,7 @@
 
                 axios.post(`${this.store.apiUrl}/api/messages`, userMessage)
                 .then(response => {
+                    this.messageSuccess = response.data.success;
                     if(response.data.success) {
                         this.errors = {},
                         this.userName = '';
@@ -67,6 +70,12 @@
                     this.submit = false;
                 })
             },
+            contactUsAgain(){
+                this.messageSuccess = false;
+            },
+            reviewUsAgain(){
+                this.reviewSuccess = false;
+            },
             // Funzione che manda al db il voto e la recensione dell' utente
             sendReviewAndRating() {
                 const userRate = {
@@ -74,6 +83,7 @@
                 };
                 axios.post(`${this.store.apiUrl}/api/ratings`, userRate)
                 .then(response => {
+                    this.reviewSuccess = response.data.success;
                     if(response.data.success) { 
                         console.log('response' , response.data.data.id);
                         this.ratingID = response.data.data.id;
@@ -149,7 +159,11 @@
             
     
             <!-- Form invio messaggio al dottore -->
-            <div class="contact container p-2 mb-4">
+            <div v-if="messageSuccess" class="alert container alert-success d-flex align-items-center justify-content-between" role="alert">
+                <p>Grazie per averci contattato, ti ricontatteremo il prima possibile!</p>
+                <button @click="contactUsAgain" class="btn btn-primary btn-brand">Scrivici ancora!</button>
+            </div>
+            <div v-else class="contact container p-2 mb-4">
                 <h2>CONTATTA IL MEDICO</h2>
                 <div class="danger mb-2">* campi obbligatori</div>
                 <form @submit.prevent="sendMessage">
@@ -220,7 +234,11 @@
             <!-- /Form invio messaggio al dottore -->
     
             <!-- Form recensione dottore -->
-            <div class="review-wrapper container p-2">
+            <div v-if="reviewSuccess" class="alert container alert-success d-flex align-items-center justify-content-between" role="alert">
+                <p>Grazie per averci dato il tuo feedback, a presto!</p>
+                <button @click="reviewUsAgain" class="btn btn-primary btn-brand">Facci sapere altro!</button>
+            </div>
+            <div v-else class="review-wrapper container p-2">
                 <h2>Scrivi una recensione</h2>
                 <div class="danger mb-2">* campi obbligatori</div>
                 <form @submit.prevent="sendReviewAndRating">
@@ -298,6 +316,9 @@
             max-width: 300px;
             border-radius: 20px;
             object-fit: cover;
+        }
+        .alert-success > p{
+            margin-bottom: 0;
         }
         p {
             strong {
