@@ -96,12 +96,14 @@ export default {
     </div>
 
     <div class="search-bar container">
-        <form class="d-flex gap-3 my-4 flex-wrap justify-content-center" id="filterForm" @submit.prevent="submitForm">
-            <div v-for="specialisation in specialisations" :key="specialisation.id">
-                <input type="checkbox" class="hide" :name="`specialisation`" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
-                <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
+        <form class="d-flex gap-3 my-4 flex-column justify-content-center" id="filterForm" @submit.prevent="submitForm">
+            <h4 class="test py-3">Cerca il dottore che fà per te!</h4>
+            <div class="container badge-wrapper d-flex flex-wrap gap-3 justify-content-center">
+                <div v-for="specialisation in specialisations" :key="specialisation.id">
+                    <input type="checkbox" class="hide" :name="`specialisation`" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
+                    <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
+                </div>
             </div>
-            <h4 class="test py-4">Cerca il dottore che fà per te!</h4>
             <div class="rating">
                 <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
                 <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
@@ -109,7 +111,9 @@ export default {
                 <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
                 <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
             </div>
-            <button type="submit" class="btn btn-primary btn-brand">Cerca Medico</button>
+            <div class="button-wrapper d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary btn-brand">Cerca Medico</button>
+            </div>
         </form>
     </div>
     <footer>
