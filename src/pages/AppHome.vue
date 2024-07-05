@@ -1,8 +1,13 @@
 <script>
 import axios from 'axios';
 import { store } from '../store.js';
+import AppCarousel from '../components/AppCarousel.vue';
 
 export default {
+    name: 'AppHome',
+    components: {
+        AppCarousel
+    },
     data() {
         return {
             store,
@@ -76,6 +81,14 @@ export default {
             </div>
         </div>
     </div>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-3 title-sponsor">I dottori in evidenza:</h2>
+        <div class="d-flex justify-content-center mb-5">
+            <AppCarousel></AppCarousel>
+        </div>
+    </div>
+
     <div class="search-bar container">
         <form class="d-flex gap-3 my-4 flex-wrap justify-content-center" id="filterForm" @submit.prevent="submitForm">
             <div v-for="specialisation in specialisations" :key="specialisation.id">
@@ -150,6 +163,10 @@ export default {
         background-color: $secondary-color;
         color: $primary-color;
     }
+}
+
+.title-sponsor{
+    color: $primary-color;
 }
 
 footer {
