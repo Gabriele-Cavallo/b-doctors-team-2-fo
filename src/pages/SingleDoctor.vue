@@ -115,8 +115,6 @@
                 })
             },
             highlightStars(rating) {
-                this.selectedRating = rating; // Aggiorna selectedRating
-
                 const stars = document.querySelectorAll('.rating label');
                 stars.forEach((star, index) => {
                     if (index <= (5 - rating) && rating !== 0) {
@@ -280,19 +278,15 @@
        
                         <option selected>Valuta il medico</option>
                         <div class="rating mb-3" id="rating">
-                                <input type="radio" id="star1" name="rating" value="1" v-model="userRate" @change="highlightStars(5)">
+                                <input type="radio" id="star1" name="rating" value="1" v-model="selectedRating" @change="highlightStars(5)">
                                 <label for="star1" class="me-2">★</label>
-                
-                                <input type="radio" id="star2" name="rating" value="2" v-model="userRate" @change="highlightStars(4)">
+                                <input type="radio" id="star2" name="rating" value="2" v-model="selectedRating" @change="highlightStars(4)">
                                 <label for="star2" class="me-2">★</label>
-                
-                                <input type="radio" id="star3" name="rating" value="3" v-model="userRate" @change="highlightStars(3)">
+                                <input type="radio" id="star3" name="rating" value="3" v-model="selectedRating" @change="highlightStars(3)">
                                 <label for="star3" class="me-2">★</label>
-                
-                                <input type="radio" id="star4" name="rating" value="4" v-model="userRate" @change="highlightStars(2)">
+                                <input type="radio" id="star4" name="rating" value="4" v-model="selectedRating" @change="highlightStars(2)">
                                 <label for="star4" class="me-2">★</label>
-                
-                                <input type="radio" id="star5" name="rating" value="5" v-model="userRate" @change="highlightStars(1)">
+                                <input type="radio" id="star5" name="rating" value="5" v-model="selectedRating" @change="highlightStars(1)">
                                 <label for="star5" class="me-2">★</label>
                         </div>        
 
