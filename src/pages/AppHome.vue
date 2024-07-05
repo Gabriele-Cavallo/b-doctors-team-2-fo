@@ -12,7 +12,9 @@ export default {
         return {
             store,
             specialisations: [],
-            selectedRating: 0 // Aggiunta di una variabile per memorizzare la valutazione selezionata
+            selectedRating: 0,
+            minReviews: 0, // 
+            minRating: 0,
         }
     },
     methods: {
@@ -30,12 +32,14 @@ export default {
             for (const pair of formData.entries()) {
                 params.append(pair[0], pair[1]);
             }
+            params.append('minReviews', this.minReviews);
             axios.get(`${this.store.apiUrl}/api/filter-results`, { params: params })
                 .then((response) => {
-                    window.location.href = response.data.url;
+                    // window.location.href = response.data.url;
+                    this.$router.push({ path: '/search-results', query: params });
                 })
                 .catch(error => {
-                    console.error('There was an error!', error);
+                    console.error('Qualcosa è andato storto!', error);
                 });
         },
         highlightStars(rating) {
@@ -94,7 +98,6 @@ export default {
     <div class="search-bar container">
         <form class="d-flex gap-3 my-4 flex-wrap justify-content-center" id="filterForm" @submit.prevent="submitForm">
             <div v-for="specialisation in specialisations" :key="specialisation.id">
-                <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
                 <input type="checkbox" class="hide" :name="`specialisation`" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
             </div>
         </form>
@@ -122,6 +125,10 @@ export default {
     margin: 0 auto;
     display: flex;
 
+}
+input:checked ~ label{
+    background-color: $secondary-color;
+    color: $primary-color;
 }
 
 .hide {
