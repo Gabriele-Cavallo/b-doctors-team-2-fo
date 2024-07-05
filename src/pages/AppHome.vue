@@ -7,17 +7,16 @@ export default {
         return {
             store,
             specialisations: [],
-            minRating: 0,
-            starRating: [false, false, false, false, false]
+            selectedRating: 0 // Aggiunta di una variabile per memorizzare la valutazione selezionata
         }
     },
     methods: {
-        getAllSpecialisations (){
+        getAllSpecialisations() {
             axios.get(`${this.store.apiUrl}/api/specialisations`)
-            .then((response) => {
-                this.specialisations = response.data.results;
-                this.loading = true;
-            })
+                .then((response) => {
+                    this.specialisations = response.data.results;
+                    this.loading = true;
+                })
         },
         submitForm() {
             const form = document.getElementById('filterForm');
@@ -34,27 +33,30 @@ export default {
                     console.error('There was an error!', error);
                 });
         },
-        resetRating() {
-            this.minRating = 0;
-        },
-        setRating(rating) {
-            this.minRating = rating;
-            this.highlightStars(rating);
-        },
-        rate(index) {
-        for (let i = 0; i <= index; i++) {
-            this.$set(this.starRating, i, true);
-        }
-        for (let i = index + 1; i < this.starRating.length; i++) {
-            this.$set(this.starRating, i, false);
+        highlightStars(rating) {
+            if (this.selectedRating === rating) {
+                rating = 0;
+                this.selectedRating = 0;
+            } else {
+                this.selectedRating = rating;
+            }
+
+            const stars = document.querySelectorAll('.rating label');
+            stars.forEach((star, index) => {
+                if (index <= (5 - rating) && rating !== 0) {
+                    star.style.color = '#f5b301';
+                } else {
+                    star.style.color = '#ddd';
+                }
+            });
         }
     },
-    },
-    mounted () {
+    mounted() {
         this.getAllSpecialisations();
     },
 }
 </script>
+
 <template>
     <div class="container-fluid custom-background">
         <div class="row justify-content-center align-items-start">
@@ -81,16 +83,15 @@ export default {
             <div v-for="specialisation in specialisations" :key="specialisation.id">
                 <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
                 <input type="checkbox" class="hide" :name="`specialisation`" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
-                <!-- <router-link :to="{ name: 'single-specialisation', params: { slug: specialisation.slug } }" class="btn btn-brand badge ms-badge">{{ specialisation.name }}</router-link> -->
             </div>
-            <div class="star-rating d-flex justify-content-center mt-5">
-    <label v-for="(checked, index) in starRating" :key="index" :for="`star-${index + 1}`" class="star" @click="rate(index)">
-        <i :class="{'fas fa-star': checked, 'far fa-star': !checked}"></i>
-        <input type="radio" :id="`star-${index + 1}`" :value="index + 1" v-model="starRating[index]" class="hide">
-    </label>
-</div>
-            <button type="submit" class="btn btn-primary btn-brand">Cerca Medico</button>
         </form>
+    </div>
+    <div class="rating">
+        <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
+        <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
+        <input type="radio" id="star3" name="rating" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
+        <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
+        <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
     </div>
     <footer>
         <div class="container">
@@ -162,26 +163,34 @@ footer {
     }
 }
 
-.star-rating {
+.rating {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    width: fit-content;
+    margin: 0 auto;
+    display: flex;
+}
+
+.rating > input {
+    display: none;
+}
+
+.rating > label {
     font-size: 2rem;
-    color: #ccc;
-}
-
-.star {
+    color: #ddd;
     cursor: pointer;
+    padding: 0 0.1rem;
 }
 
-.star i {
-    transition: color 0.2s;
+.rating > input:checked ~ label {
+    color: #f5b301;
 }
 
-/* Stelle non selezionate */
-.star input:checked ~ label i {
-    color: gold;
+.rating > input:checked ~ label ~ label {
+    color: #ddd;
 }
 
-/* Stelle selezionate */
-.star input:checked + label i {
-    color: gold;
+.rating > input:focus ~ label {
+    color: #f5b301;
 }
 </style>
