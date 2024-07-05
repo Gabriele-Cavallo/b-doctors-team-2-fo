@@ -6,6 +6,7 @@ import SingleSpecialisation from './pages/SingleSpecialisation.vue';
 import SingleDoctor from './pages/SingleDoctor.vue';
 import AppTermsAndConditionsMessages from './pages/AppTermsAndConditionsMessages.vue';
 import AppTermsAndConditionsRatings from './pages/AppTermsAndConditionsRatings.vue';
+import SearchResults from './pages/SearchResults.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -45,6 +46,12 @@ const router = createRouter({
             name: 'terms-and-conditions-ratings',
             component: AppTermsAndConditionsRatings
         },
+        {
+            path: '/search-results',
+            name: 'search-results',
+            component: SearchResults,
+            props: true,
+        }
     ]
 });
 export { router };

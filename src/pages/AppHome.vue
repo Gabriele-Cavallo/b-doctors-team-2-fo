@@ -12,7 +12,9 @@ export default {
         return {
             store,
             specialisations: [],
-            selectedRating: 0 // Aggiunta di una variabile per memorizzare la valutazione selezionata
+            selectedRating: 0,
+            minReviews: 0, // 
+            minRating: 0,
         }
     },
     methods: {
@@ -30,12 +32,14 @@ export default {
             for (const pair of formData.entries()) {
                 params.append(pair[0], pair[1]);
             }
+            params.append('minReviews', this.minReviews);
             axios.get(`${this.store.apiUrl}/api/filter-results`, { params: params })
                 .then((response) => {
-                    window.location.href = response.data.url;
+                    // window.location.href = response.data.url;
+                    this.$router.push({ path: '/search-results', query: params });
                 })
                 .catch(error => {
-                    console.error('There was an error!', error);
+                    console.error('Qualcosa è andato storto!', error);
                 });
         },
         highlightStars(rating) {
@@ -94,18 +98,19 @@ export default {
     <div class="search-bar container">
         <form class="d-flex gap-3 my-4 flex-wrap justify-content-center" id="filterForm" @submit.prevent="submitForm">
             <div v-for="specialisation in specialisations" :key="specialisation.id">
-                <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
                 <input type="checkbox" class="hide" :name="`specialisation`" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
+                <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
             </div>
+            <h4 class="test py-4">Cerca il dottore che fà per te!</h4>
+            <div class="rating">
+                <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
+                <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
+                <input type="radio" id="star3" name="rating" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
+                <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
+                <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-brand">Cerca Medico</button>
         </form>
-    </div>
-    <h4 class="test py-4">Cerca il dottore che fà per te!</h4>
-    <div class="rating">
-        <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
-        <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
-        <input type="radio" id="star3" name="rating" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
-        <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
-        <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
     </div>
     <footer>
         <div class="container">
@@ -122,6 +127,10 @@ export default {
     margin: 0 auto;
     display: flex;
 
+}
+input:checked ~ label{
+    background-color: $secondary-color;
+    color: $primary-color;
 }
 
 .hide {
