@@ -73,7 +73,7 @@ export default {
 
             const stars = document.querySelectorAll('.rating label');
             stars.forEach((star, index) => {
-                if (index < rating) {
+                if (index <= 5 - rating) {
                     star.style.color = '#f5b301';
                 } else {
                     star.style.color = '#ddd';
@@ -91,6 +91,8 @@ export default {
 }
 </script>
 
+
+
 <template>
     <section>
         <div v-if="!loading" class="container py-3">
@@ -106,11 +108,11 @@ export default {
             <h4 class="my-3">Filtra per stelle!</h4>
             <div class="filter-wrapper my-3">
                 <div class="rating">
-                    <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(1)" /><label for="star5" title="5 stars">★</label>
-                    <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(2)" /><label for="star4" title="4 stars">★</label>
+                    <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
+                    <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
                     <input type="radio" id="star3" name="rating" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
-                    <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(4)" /><label for="star2" title="2 stars">★</label>
-                    <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(5)" /><label for="star1" title="1 star">★</label>
+                    <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
+                    <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
                 </div>
             </div>
             <div v-for="doctor in filteredDoctors" class="doctors-wrapper card my-4 p-3" :key="doctor.user_slug">
@@ -135,6 +137,8 @@ export default {
         </div>
     </section>
 </template>
+
+
 
 <style lang="scss" scoped>
 @use '../style/partials/variables' as *;
@@ -197,3 +201,4 @@ section {
     color: #f5b301;
 }
 </style>
+
