@@ -280,16 +280,16 @@
        
                         <option selected>Valuta il medico</option>
                         <div class="rating mb-3" id="rating">
-                                <input type="radio" id="star1" name="rating" value="5" v-model="userRate" @change="highlightStars(5)">
+                                <input type="radio" id="star1" name="rating" value="1" v-model="userRate" @change="highlightStars(5)">
                                 <label for="star1" class="me-2">★</label>
                 
-                                <input type="radio" id="star2" name="rating" value="5" v-model="userRate" @change="highlightStars(4)">
+                                <input type="radio" id="star2" name="rating" value="2" v-model="userRate" @change="highlightStars(4)">
                                 <label for="star2" class="me-2">★</label>
                 
-                                <input type="radio" id="star3" name="rating" value="5" v-model="userRate" @change="highlightStars(3)">
+                                <input type="radio" id="star3" name="rating" value="3" v-model="userRate" @change="highlightStars(3)">
                                 <label for="star3" class="me-2">★</label>
                 
-                                <input type="radio" id="star4" name="rating" value="5" v-model="userRate" @change="highlightStars(2)">
+                                <input type="radio" id="star4" name="rating" value="4" v-model="userRate" @change="highlightStars(2)">
                                 <label for="star4" class="me-2">★</label>
                 
                                 <input type="radio" id="star5" name="rating" value="5" v-model="userRate" @change="highlightStars(1)">

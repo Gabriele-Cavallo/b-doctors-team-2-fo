@@ -20,6 +20,7 @@ export default {
             noDoctorsFound: false,
             reviews: [],
             reviewCount: '',
+            selectedRating: 0
         }
     },
     methods: {
@@ -27,7 +28,7 @@ export default {
             await axios.get(`${this.store.apiUrl}/api/reviews`)
             .then(response => {
                 this.reviews = response.data.reviews;
-                console.log('review' , response.data.reviews);
+                console.log('review', response.data.reviews);
                 axios.get(`${this.store.apiUrl}/api/specialisations/${this.$route.params.slug}`)
                 .then((response) => {
                     this.doctors = response.data.profile;
@@ -44,31 +45,35 @@ export default {
             })
         },
         filterDoctors() {
-            if (!this.minRating && !this.searchQuery && !this.filterByRating) {
+            if (!this.minRating && !this.searchQuery) {
                 this.filteredDoctors = this.doctors;
                 this.noDoctorsFound = false;
                 return;
             }
 
-            this.filteredDoctors = this.doctors.filter(doctor =>
-                (!this.minRating || doctor.rating >= this.minRating) &&
-                (!this.searchQuery || doctor.user_name.toLowerCase().includes(this.searchQuery.toLowerCase())) &&
-                (!this.filterByRating || (doctor.rating >= 0 && doctor.rating <= 5))
-            );
+            // Filtrare e ordinare i dottori
+            this.filteredDoctors = this.doctors
+                .filter(doctor => {
+                    const doctorRating = this.reviews.find(review => review.profile_id === doctor.id)?.average_score || 0;
+                    return (!this.minRating || doctorRating >= this.minRating) &&
+                           (!this.searchQuery || doctor.user_name.toLowerCase().includes(this.searchQuery.toLowerCase()));
+                })
+                .sort((a, b) => {
+                    const ratingA = this.reviews.find(review => review.profile_id === a.id)?.average_score || 0;
+                    const ratingB = this.reviews.find(review => review.profile_id === b.id)?.average_score || 0;
+                    return ratingB - ratingA; // Ordinare in ordine decrescente
+                });
 
             this.noDoctorsFound = this.filteredDoctors.length === 0;
         },
         highlightStars(rating) {
-            if (this.selectedRating === rating) {
-                rating = 0;
-                this.selectedRating = 0;
-            } else {
-                this.selectedRating = rating;
-            }
+            this.minRating = rating;
+            this.selectedRating = rating;
+            this.filterDoctors();
 
             const stars = document.querySelectorAll('.rating label');
             stars.forEach((star, index) => {
-                if (index <= (5 - rating) && rating !== 0) {
+                if (index < rating) {
                     star.style.color = '#f5b301';
                 } else {
                     star.style.color = '#ddd';
@@ -78,8 +83,7 @@ export default {
     },
     watch: {
         minRating: 'filterDoctors',
-        searchQuery: 'filterDoctors',
-        filterByRating: 'filterDoctors'
+        searchQuery: 'filterDoctors'
     },
     mounted() {
         this.getSingleSpecialisation();
@@ -102,11 +106,11 @@ export default {
             <h4 class="my-3">Filtra per stelle!</h4>
             <div class="filter-wrapper my-3">
                 <div class="rating">
-                    <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
-                    <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
+                    <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(1)" /><label for="star5" title="5 stars">★</label>
+                    <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(2)" /><label for="star4" title="4 stars">★</label>
                     <input type="radio" id="star3" name="rating" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
-                    <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
-                    <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
+                    <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(4)" /><label for="star2" title="2 stars">★</label>
+                    <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(5)" /><label for="star1" title="1 star">★</label>
                 </div>
             </div>
             <div v-for="doctor in filteredDoctors" class="doctors-wrapper card my-4 p-3" :key="doctor.user_slug">
@@ -192,5 +196,4 @@ section {
 .rating > input:focus ~ label {
     color: #f5b301;
 }
-
 </style>
