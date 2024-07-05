@@ -67,6 +67,11 @@ export default {
             this.noDoctorsFound = this.filteredDoctors.length === 0;
         },
         highlightStars(rating) {
+            if (this.minRating === rating) {
+                this.resetStars();
+                return;
+            }
+
             this.minRating = rating;
             this.selectedRating = rating;
             this.filterDoctors();
@@ -79,6 +84,16 @@ export default {
                     star.style.color = '#ddd';
                 }
             });
+        },
+        resetStars() {
+            this.minRating = 0;
+            this.selectedRating = 0;
+            this.filterDoctors();
+
+            const stars = document.querySelectorAll('.rating label');
+            stars.forEach((star) => {
+                star.style.color = '#ddd';
+            });
         }
     },
     watch: {
@@ -90,8 +105,6 @@ export default {
     }
 }
 </script>
-
-
 
 <template>
     <section>
@@ -137,8 +150,6 @@ export default {
         </div>
     </section>
 </template>
-
-
 
 <style lang="scss" scoped>
 @use '../style/partials/variables' as *;
@@ -201,4 +212,3 @@ section {
     color: #f5b301;
 }
 </style>
-
