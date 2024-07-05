@@ -86,6 +86,7 @@ export default {
             </div>
         </form>
     </div>
+    <h4 class="test py-4">Cerca il dottore che fà per te!</h4>
     <div class="rating">
         <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
         <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
@@ -102,6 +103,13 @@ export default {
 
 <style lang="scss" scoped>
 @use '../style/partials/variables' as *;
+
+.test {
+    width: fit-content;
+    margin: 0 auto;
+    display: flex;
+
+}
 
 .hide {
     display: none;
