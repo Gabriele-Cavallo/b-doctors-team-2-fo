@@ -1,23 +1,29 @@
 <script>
 import axios from 'axios';
 import { store } from '../store.js';
+import AppCarousel from '../components/AppCarousel.vue';
 
 export default {
+    name: 'AppHome',
+    components: {
+        AppCarousel
+    },
     data() {
         return {
             store,
             specialisations: [],
+            selectedRating: 0,
+            minReviews: 0, // 
             minRating: 0,
-            minReviews: 0,
         }
     },
     methods: {
-        getAllSpecialisations (){
+        getAllSpecialisations() {
             axios.get(`${this.store.apiUrl}/api/specialisations`)
-            .then((response) => {
-                this.specialisations = response.data.results;
-                this.loading = true;
-            })
+                .then((response) => {
+                    this.specialisations = response.data.results;
+                    this.loading = true;
+                })
         },
         submitForm() {
             const form = document.getElementById('filterForm');
@@ -36,35 +42,30 @@ export default {
                     console.error('Qualcosa è andato storto!', error);
                 });
         },
-        resetRating() {
-            this.minRating = 0;
-        },
-        setRating(rating) {
-            this.minRating = rating;
-            this.highlightStars(rating);
-        },
         highlightStars(rating) {
-            const inputs = document.querySelectorAll('.rating-stars input');
-            inputs.forEach((input, index) => {
-                if (index >= rating) {
-                    input.classList.add('highlighted');
-                    input.classList.add('pippo');
+            if (this.selectedRating === rating) {
+                rating = 0;
+                this.selectedRating = 0;
+            } else {
+                this.selectedRating = rating;
+            }
+
+            const stars = document.querySelectorAll('.rating label');
+            stars.forEach((star, index) => {
+                if (index <= (5 - rating) && rating !== 0) {
+                    star.style.color = '#f5b301';
                 } else {
-                    input.classList.remove('highlighted');
+                    star.style.color = '#ddd';
                 }
             });
         }
     },
-    mounted () {
+    mounted() {
         this.getAllSpecialisations();
     },
-    watch: {
-        minRating(newRating) {
-            this.highlightStars(newRating);
-        }
-    }
 }
 </script>
+
 <template>
     <div class="container-fluid custom-background">
         <div class="row justify-content-center align-items-start">
@@ -86,26 +87,28 @@ export default {
             </div>
         </div>
     </div>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-3 title-sponsor">I dottori in evidenza:</h2>
+        <div class="d-flex justify-content-center mb-5">
+            <AppCarousel></AppCarousel>
+        </div>
+    </div>
+
     <div class="search-bar container">
         <form class="d-flex gap-3 my-4 flex-wrap justify-content-center" id="filterForm" @submit.prevent="submitForm">
             <div v-for="specialisation in specialisations" :key="specialisation.id">
                 <input type="checkbox" class="hide" :name="`specialisation`" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
-                <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
-                <!-- <router-link :to="{ name: 'single-specialisation', params: { slug: specialisation.slug } }" class="btn btn-brand badge ms-badge">{{ specialisation.name }}</router-link> -->
             </div>
-            <div class="filter-wrapper my-3">
-                <div class="rating-stars">
-                    <input type="radio" name="rating" id="rs0" v-model="minRating" value="0"><label for="rs0"></label>
-                    <input type="radio" name="rating" id="rs1" v-model="minRating" value="1" @click="setRating(0)"><label for="rs1"></label>
-                    <input type="radio" name="rating" id="rs2" v-model="minRating" value="2" @click="setRating(2)"><label for="rs2"></label>
-                    <input type="radio" name="rating" id="rs3" v-model="minRating" value="3" @click="setRating(3)"><label for="rs3"></label>
-                    <input type="radio" name="rating" id="rs4" v-model="minRating" value="4" @click="setRating(4)"><label for="rs4"></label>
-                    <input type="radio" name="rating" id="rs5" v-model="minRating" value="5" @click="setRating(5)"><label for="rs5"></label>
-                    <button @click="resetRating" class="btn btn-brand ms-3">Reset</button>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary btn-brand">Cerca Medico</button>
         </form>
+    </div>
+    <h4 class="test py-4">Cerca il dottore che fà per te!</h4>
+    <div class="rating">
+        <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
+        <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
+        <input type="radio" id="star3" name="rating" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
+        <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
+        <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
     </div>
     <footer>
         <div class="container">
@@ -116,6 +119,13 @@ export default {
 
 <style lang="scss" scoped>
 @use '../style/partials/variables' as *;
+
+.test {
+    width: fit-content;
+    margin: 0 auto;
+    display: flex;
+
+}
 input:checked ~ label{
     background-color: $secondary-color;
     color: $primary-color;
@@ -171,6 +181,10 @@ input:checked ~ label{
     }
 }
 
+.title-sponsor{
+    color: $primary-color;
+}
+
 footer {
     text-align: center;
     margin: 0 auto;
@@ -181,87 +195,34 @@ footer {
     }
 }
 
-.rating-stars {
-    display: block;
-    width: 50vmin;
-    padding: 1px 1px 2px 3px;
-    border-radius: 5vmin 5vmin 5vmin 5vmin;
-    position: relative;
+.rating {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    width: fit-content;
+    margin: 0 auto;
+    display: flex;
 }
 
-.rating-stars input {
+.rating > input {
     display: none;
 }
 
-.rating-stars label {
-    width: 20px;
-    height: 20px;
-    background: #000b;
-    display: inline-flex;
+.rating > label {
+    font-size: 2rem;
+    color: #ddd;
     cursor: pointer;
-    margin: 0.5vmin 0.65vmin;
-    transition: all 1s ease 0s;
-    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
+    padding: 0 0.1rem;
 }
 
-.rating-stars label[for=rs0] {
-    display: none;
+.rating > input:checked ~ label {
+    color: #f5b301;
 }
 
-.rating-stars label:before {
-    width: 90%;
-    height: 90%;
-    content: "";
-    background: orange;
-    z-index: -1;
-    display: block;
-    margin-left: 5%;
-    margin-top: 5%;
-    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
-    background: linear-gradient(90deg, yellow, orange 30% 50%, #184580 50%, 70%, #173a75 100%);
-    background-size: 205% 100%;
-    background-position: 0 0;
+.rating > input:checked ~ label ~ label {
+    color: #ddd;
 }
 
-.rating-stars label:hover:before {
-    transition: all 0.25s ease 0s;
-}
-
-.rating-stars input:checked + label ~ label:before {
-    background-position: 100% 0;
-    transition: all 0.25s ease 0s;
-}
-
-.rating-stars input:checked + label ~ label:hover:before {
-    background-position: 0% 0;
-}
-
-.rating-stars .highlighted {
-    background-position: 100% 0 !important;
-}
-
-.rating-stars label[for=rs1]:hover ~ .rating-counter:before {
-    content: "1" !important;
-}
-
-.rating-stars label[for=rs2]:hover ~ .rating-counter:before {
-    content: "2" !important;
-}
-
-.rating-stars label[for=rs3]:hover ~ .rating-counter:before {
-    content: "3" !important;
-}
-
-.rating-stars label[for=rs4]:hover ~ .rating-counter:before {
-    content: "4" !important;
-}
-
-.rating-stars label[for=rs5]:hover ~ .rating-counter:before {
-    content: "5" !important;
-}
-
-.rating-stars input:checked:hover ~ .rating-counter:before {
-    animation: none !important;
-    color: #ffab00 !important;
+.rating > input:focus ~ label {
+    color: #f5b301;
 }
 </style>

@@ -1,6 +1,6 @@
 <script>
 export default {
-    name: 'AppHeader'
+    name: 'AppHeader',
 }
 </script>
 
@@ -10,7 +10,7 @@ export default {
             <div>
                 <h1>BD<i class="fa-solid fa-stethoscope"></i>ctors</h1>
             </div>
-            <ul class="nav nav-underline align-self-center">
+            <ul ref="wrapper" class="nav nav-underline align-self-center">
                 <li class="nav-item">
                     <router-link class="nav-link link-dark" aria-current="page" :to="{name: 'home'}">Homepage</router-link>
                 </li>
@@ -30,6 +30,7 @@ export default {
 
 h1{
     color: $primary-color;
+    font-size: 50px;
 }
 i{
     color: $primary-color;

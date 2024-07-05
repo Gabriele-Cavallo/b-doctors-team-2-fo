@@ -58,29 +58,20 @@ export default {
 
             this.noDoctorsFound = this.filteredDoctors.length === 0;
         },
-        resetRating() {
-            this.minRating = 0;
-            this.highlightStars(0);
-        },
-        setRating(rating) {
-            this.minRating = rating;
-            this.highlightStars(rating);
-        },
         highlightStars(rating) {
-            const labels = document.querySelectorAll('.rating-stars label');
-            labels.forEach((label, index) => {
-                if (rating >= 3) {
-                    if (index + 1 >= 3 && index + 1 <= rating) {
-                        label.classList.add('highlighted');
-                    } else if (index + 1 >= 3) {
-                        label.classList.remove('highlighted');
-                    }
+            if (this.selectedRating === rating) {
+                rating = 0;
+                this.selectedRating = 0;
+            } else {
+                this.selectedRating = rating;
+            }
+
+            const stars = document.querySelectorAll('.rating label');
+            stars.forEach((star, index) => {
+                if (index <= (5 - rating) && rating !== 0) {
+                    star.style.color = '#f5b301';
                 } else {
-                    if (index + 1 <= rating) {
-                        label.classList.add('highlighted');
-                    } else {
-                        label.classList.remove('highlighted');
-                    }
+                    star.style.color = '#ddd';
                 }
             });
         }
@@ -108,16 +99,14 @@ export default {
                 </div>
                 <router-link :to="{ name: 'our-doctors' }" class="btn btn-brand">Ritorna</router-link>
             </div>
-            <h4 class="py-3">Filtra per stelle!</h4>
+            <h4 class="my-3">Filtra per stelle!</h4>
             <div class="filter-wrapper my-3">
-                <div class="rating-stars">
-                    <input type="radio" name="rating" id="rs0" v-model="minRating" value="0" ><label for="rs0"></label>
-                    <input type="radio" name="rating" id="rs1" v-model="minRating" value="1" @click="setRating(0)"><label for="rs1"></label>
-                    <input type="radio" name="rating" id="rs2" v-model="minRating" value="2" @click="setRating(2)"><label for="rs2"></label>
-                    <input type="radio" name="rating" id="rs3" v-model="minRating" value="3" @click="setRating(3)"><label for="rs3"></label>
-                    <input type="radio" name="rating" id="rs4" v-model="minRating" value="4" @click="setRating(4)"><label for="rs4"></label>
-                    <input type="radio" name="rating" id="rs5" v-model="minRating" value="5" @click="setRating(5)"><label for="rs5"></label>
-                    <button @click="resetRating" class="btn btn-brand ms-3">Reset</button>
+                <div class="rating">
+                    <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
+                    <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
+                    <input type="radio" id="star3" name="rating" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
+                    <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
+                    <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
                 </div>
             </div>
             <div v-for="doctor in filteredDoctors" class="doctors-wrapper card my-4 p-3" :key="doctor.user_slug">
@@ -174,87 +163,34 @@ section {
     }
 }
 
-.rating-stars {
-    display: block;
-    width: 50vmin;
-    padding: 1px 1px 2px 3px;
-    border-radius: 5vmin 5vmin 5vmin 5vmin;
-    position: relative;
+.rating {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    width: fit-content;
+    display: flex;
 }
 
-.rating-stars input {
+.rating > input {
     display: none;
 }
 
-.rating-stars label {
-    width: 20px;
-    height: 20px;
-    background: #000b;
-    display: inline-flex;
+.rating > label {
+    font-size: 2rem;
+    color: #ddd;
     cursor: pointer;
-    margin: 0.5vmin 0.65vmin;
-    transition: all 1s ease 0s;
-    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
+    padding: 0 0.1rem;
 }
 
-.rating-stars label[for=rs0] {
-    display: none;
+.rating > input:checked ~ label {
+    color: #f5b301;
 }
 
-.rating-stars label:before {
-    width: 90%;
-    height: 90%;
-    content: "";
-    background: orange;
-    z-index: -1;
-    display: block;
-    margin-left: 5%;
-    margin-top: 5%;
-    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
-    background: linear-gradient(90deg, yellow, orange 30% 50%, #184580 50%, 70%, #173a75 100%);
-    background-size: 205% 100%;
-    background-position: 0 0;
+.rating > input:checked ~ label ~ label {
+    color: #ddd;
 }
 
-.rating-stars label:hover:before {
-    transition: all 0.25s ease 0s;
+.rating > input:focus ~ label {
+    color: #f5b301;
 }
 
-.rating-stars input:checked + label ~ label:before {
-    background-position: 100% 0;
-    transition: all 0.25s ease 0s;
-}
-
-.rating-stars input:checked + label ~ label:hover:before {
-    background-position: 0% 0;
-}
-
-.rating-stars .highlighted {
-    background-position: 100% 0 !important;
-}
-
-.rating-stars label[for=rs1]:hover ~ .rating-counter:before {
-    content: "1" !important;
-}
-
-.rating-stars label[for=rs2]:hover ~ .rating-counter:before {
-    content: "2" !important;
-}
-
-.rating-stars label[for=rs3]:hover ~ .rating-counter:before {
-    content: "3" !important;
-}
-
-.rating-stars label[for=rs4]:hover ~ .rating-counter:before {
-    content: "4" !important;
-}
-
-.rating-stars label[for=rs5]:hover ~ .rating-counter:before {
-    content: "5" !important;
-}
-
-.rating-stars input:checked:hover ~ .rating-counter:before {
-    animation: none !important;
-    color: #ffab00 !important;
-}
 </style>
