@@ -2,20 +2,20 @@
 export default {
     name: 'AppHeader',
     data() {
-    return {
-      activeText: null // Stato condiviso per gestire quale testo ha i bordi
-    };
-  },
-  methods: {
-    toggleBorder(textNumber) {
-      // Se clicchi su un testo già attivo, rimuovi i bordi
-      if (this.activeText === textNumber) {
-        this.activeText = null;
-      } else {
-        this.activeText = textNumber;
-      }
+        return {
+            activeText: null
+        };
+    },
+    methods: {
+        toggleBorder(textNumber) {
+            // Se clicchi su un testo già attivo, rimuovi i bordi
+            if (this.activeText === textNumber) {
+                this.activeText = null;
+            } else {
+                this.activeText = textNumber;
+            }
+        }
     }
-  }
 }
 </script>
 
