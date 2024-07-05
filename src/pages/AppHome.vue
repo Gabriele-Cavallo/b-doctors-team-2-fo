@@ -7,7 +7,8 @@ export default {
         return {
             store,
             specialisations: [],
-            minRating: 0
+            minRating: 0,
+            minReviews: 0,
         }
     },
     methods: {
@@ -25,12 +26,14 @@ export default {
             for (const pair of formData.entries()) {
                 params.append(pair[0], pair[1]);
             }
+            params.append('minReviews', this.minReviews);
             axios.get(`${this.store.apiUrl}/api/filter-results`, { params: params })
                 .then((response) => {
-                    window.location.href = response.data.url;
+                    // window.location.href = response.data.url;
+                    this.$router.push({ path: '/search-results', query: params });
                 })
                 .catch(error => {
-                    console.error('There was an error!', error);
+                    console.error('Qualcosa è andato storto!', error);
                 });
         },
         resetRating() {
@@ -86,8 +89,8 @@ export default {
     <div class="search-bar container">
         <form class="d-flex gap-3 my-4 flex-wrap justify-content-center" id="filterForm" @submit.prevent="submitForm">
             <div v-for="specialisation in specialisations" :key="specialisation.id">
-                <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
                 <input type="checkbox" class="hide" :name="`specialisation`" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
+                <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
                 <!-- <router-link :to="{ name: 'single-specialisation', params: { slug: specialisation.slug } }" class="btn btn-brand badge ms-badge">{{ specialisation.name }}</router-link> -->
             </div>
             <div class="filter-wrapper my-3">
@@ -113,6 +116,10 @@ export default {
 
 <style lang="scss" scoped>
 @use '../style/partials/variables' as *;
+input:checked ~ label{
+    background-color: $secondary-color;
+    color: $primary-color;
+}
 
 .hide {
     display: none;
