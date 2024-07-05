@@ -122,32 +122,23 @@
                 
 
             },
-            resetRating() {
-            this.minRating = 0;
-            this.highlightStars(0);
-        },
-        setRating(rating) {
-            this.minRating = rating;
-            this.highlightStars(rating);
-        },
-        highlightStars(rating) {
-            const labels = document.querySelectorAll('.rating-stars label');
-            labels.forEach((label, index) => {
-                if (rating >= 3) {
-                    if (index + 1 >= 3 && index + 1 <= rating) {
-                        label.classList.add('highlighted');
-                    } else if (index + 1 >= 3) {
-                        label.classList.remove('highlighted');
-                    }
+            highlightStars(rating) {
+            if (this.selectedRating === rating) {
+                rating = 0;
+                this.selectedRating = 0;
+            } else {
+                this.selectedRating = rating;
+            }
+
+            const stars = document.querySelectorAll('.rating label');
+            stars.forEach((star, index) => {
+                if (index <= (5 - rating) && rating !== 0) {
+                    star.style.color = '#f5b301';
                 } else {
-                    if (index + 1 <= rating) {
-                        label.classList.add('highlighted');
-                    } else {
-                        label.classList.remove('highlighted');
-                    }
+                    star.style.color = '#ddd';
                 }
             });
-        },
+        }
     },
     watch: {
         minRating: 'filterDoctors',
@@ -290,29 +281,29 @@
                     <!-- /Input user name -->
     
                     <!-- Input user description -->
-                    <div class="mb-3">
+                    <div class="mb-1">
                         <label for="description-review" class="form-label ms-label">* Lascia la tua recensione:</label>
                         <textarea name="description" rows="10" id="description-review" v-model="userMessageReview"></textarea>
+                        
                     </div>
+                        
                     <div v-if="errors.description">
                         <div v-for="error in errors.description" class="alert alert-danger" role="alert">
                             {{ error }}
                         </div>
                     </div>
+                    <div class="rating py-3">
+                        <div>Valuta il dottore!</div>
+                        <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
+                        <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
+                        <input type="radio" id="star3" name="rating" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
+                        <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
+                        <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
+                    </div>
                     <!-- Input user description -->
     
                     <!-- User rating -->
-                    <div class="filter-wrapper my-3">
-                <div class="rating-stars">
-                    <input type="radio" name="rating" id="rs0" v-model="minRating" value="0" ><label for="rs0"></label>
-                    <input type="radio" name="rating" id="rs1" v-model="minRating" value="1" @click="setRating(0)"><label for="rs1"></label>
-                    <input type="radio" name="rating" id="rs2" v-model="minRating" value="2" @click="setRating(2)"><label for="rs2"></label>
-                    <input type="radio" name="rating" id="rs3" v-model="minRating" value="3" @click="setRating(3)"><label for="rs3"></label>
-                    <input type="radio" name="rating" id="rs4" v-model="minRating" value="4" @click="setRating(4)"><label for="rs4"></label>
-                    <input type="radio" name="rating" id="rs5" v-model="minRating" value="5" @click="setRating(5)"><label for="rs5"></label>
-                    <button @click="resetRating" class="btn btn-brand ms-3">Reset</button>
-                </div>
-            </div>
+
                     <!-- /User rating -->
     
                     <!-- Accept TC -->
@@ -329,7 +320,9 @@
     
                     <button :disable="submitReview" type="submit" class="btn btn-brand">{{ submitReview ? 'Invio...' : 'Invia'}}</button>
                 </form>
+                                    
             </div>
+            
             <!-- /Form recensione dottore -->
         </div>
     </section>
@@ -377,90 +370,31 @@
         .danger{
             color:red;
         }
-
-        .rating-stars {
-    display: block;
-    width: 50vmin;
-    padding: 1px 1px 2px 3px;
-    border-radius: 5vmin 5vmin 5vmin 5vmin;
-    position: relative;
-}
-
-.rating-stars input {
-    display: none;
-}
-
-.rating-stars label {
-    width: 20px;
-    height: 20px;
-    background: #000b;
-    display: inline-flex;
-    cursor: pointer;
-    margin: 0.5vmin 0.65vmin;
-    transition: all 1s ease 0s;
-    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
-}
-
-.rating-stars label[for=rs0] {
-    display: none;
-}
-
-.rating-stars label:before {
-    width: 90%;
-    height: 90%;
-    content: "";
-    background: orange;
-    z-index: -1;
-    display: block;
-    margin-left: 5%;
-    margin-top: 5%;
-    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
-    background: linear-gradient(90deg, yellow, orange 30% 50%, #184580 50%, 70%, #173a75 100%);
-    background-size: 205% 100%;
-    background-position: 0 0;
-}
-
-.rating-stars label:hover:before {
-    transition: all 0.25s ease 0s;
-}
-
-.rating-stars input:checked + label ~ label:before {
-    background-position: 100% 0;
-    transition: all 0.25s ease 0s;
-}
-
-.rating-stars input:checked + label ~ label:hover:before {
-    background-position: 0% 0;
-}
-
-.rating-stars .highlighted {
-    background-position: 100% 0 !important;
-}
-
-.rating-stars label[for=rs1]:hover ~ .rating-counter:before {
-    content: "1" !important;
-}
-
-.rating-stars label[for=rs2]:hover ~ .rating-counter:before {
-    content: "2" !important;
-}
-
-.rating-stars label[for=rs3]:hover ~ .rating-counter:before {
-    content: "3" !important;
-}
-
-.rating-stars label[for=rs4]:hover ~ .rating-counter:before {
-    content: "4" !important;
-}
-
-.rating-stars label[for=rs5]:hover ~ .rating-counter:before {
-    content: "5" !important;
-}
-
-.rating-stars input:checked:hover ~ .rating-counter:before {
-    animation: none !important;
-    color: #ffab00 !important;
-}
-
     }
+    .rating {
+    width: fit-content;
+}
+
+.rating > input {
+    display: none;
+}
+
+.rating > label {
+    font-size: 2rem;
+    color: #ddd;
+    cursor: pointer;
+    padding: 0 0.1rem;
+}
+
+.rating > input:checked ~ label {
+    color: #f5b301;
+}
+
+.rating > input:checked ~ label ~ label {
+    color: #ddd;
+}
+
+.rating > input:focus ~ label {
+    color: #f5b301;
+}
 </style>
