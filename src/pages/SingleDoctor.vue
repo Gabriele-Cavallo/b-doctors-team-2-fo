@@ -24,7 +24,7 @@
                 submitReview: false,
                 userTc: '',
                 userTcReview: '',
-                userRate: '',
+                selectedRating: '', // Aggiungi questa linea
                 doctorID: '',
                 ratingID: '',
                 messageSuccess: false,
@@ -33,7 +33,6 @@
             }
         },
         methods: {
-            // Funzione che chiama dal db il singolo dottore
             getSingleDoctor() {
                 axios.get(`${this.store.apiUrl}/api/profiles/${this.$route.params.slug}`)
                 .then((response) => {
@@ -42,7 +41,6 @@
                     this.loading = true;
                 })
             },
-            // Funzione che manda al db il messaggio utente
             sendMessage() {
                 const userMessage = {
                     name: this.userName,
@@ -77,10 +75,9 @@
             reviewUsAgain(){
                 this.reviewSuccess = false;
             },
-            // Funzione che manda al db il voto e la recensione dell' utente
             sendReviewAndRating() {
                 const userRate = {
-                    score: this.userRate,
+                    score: this.selectedRating, // Cambia userRate con selectedRating
                 };
                 axios.post(`${this.store.apiUrl}/api/ratings`, userRate)
                 .then(response => {
@@ -89,7 +86,7 @@
                         console.log('response' , response.data.data.id);
                         this.ratingID = response.data.data.id;
                         this.errors = {},
-                        this.userRate = '';
+                        this.selectedRating = ''; // Resetta selectedRating
                     } else {
                         this.errors = response.data.errors;
                     }
@@ -98,19 +95,17 @@
                         description: this.userMessageReview,
                         profile_id: this.doctorID,
                         rating_id: this.ratingID,
-                        // accepted_tc: this.userTcReview
                     };
     
                     this.submitReview = true;
     
-                        axios.post(`${this.store.apiUrl}/api/reviews`, userReview)
+                    axios.post(`${this.store.apiUrl}/api/reviews`, userReview)
                         .then(response => {
                             if(response.data.success) {
                                 this.errors = {},
                                 this.userNameReview = '';
                                 this.userMessageReview = '';
                                 this.ratingID = '';
-                                // this.userTcReview = '';
                             } else {
                                 this.errors = response.data.errors;
                             }
@@ -118,40 +113,32 @@
                         })
                         
                 })
-
-                
-
             },
             highlightStars(rating) {
-            if (this.selectedRating === rating) {
-                rating = 0;
-                this.selectedRating = 0;
-            } else {
-                this.selectedRating = rating;
-            }
+                this.selectedRating = rating; // Aggiorna selectedRating
 
-            const stars = document.querySelectorAll('.rating label');
-            stars.forEach((star, index) => {
-                if (index <= (5 - rating) && rating !== 0) {
-                    star.style.color = '#f5b301';
-                } else {
-                    star.style.color = '#ddd';
-                }
-            });
-        }
-    },
-    watch: {
-        minRating: 'filterDoctors',
-        searchQuery: 'filterDoctors',
-        filterByRating: 'filterDoctors'
-    },
+                const stars = document.querySelectorAll('.rating label');
+                stars.forEach((star, index) => {
+                    if (index <= (5 - rating) && rating !== 0) {
+                        star.style.color = '#f5b301';
+                    } else {
+                        star.style.color = '#ddd';
+                    }
+                });
+            }
+        },
+        watch: {
+            minRating: 'filterDoctors',
+            searchQuery: 'filterDoctors',
+            filterByRating: 'filterDoctors'
+        },
 
         mounted() {
             this.getSingleDoctor();
         },
     }
-    
 </script>
+
 
 <template>
     <section class="py-4">
@@ -190,7 +177,7 @@
                 <button @click="contactUsAgain" class="btn btn-primary btn-brand">Scrivici ancora!</button>
             </div>
             <div v-else class="contact container p-2 mb-4">
-                <h2>CONTATTA IL MEDICO</h2>
+                <h2>Contatta il tuo Medico</h2>
                 <div class="danger mb-2">* campi obbligatori</div>
                 <form @submit.prevent="sendMessage">
     
@@ -278,9 +265,7 @@
                             {{ error }}
                         </div>
                     </div>
-                    <!-- /Input user name -->
-    
-                    <!-- Input user description -->
+                
                     <div class="mb-1">
                         <label for="description-review" class="form-label ms-label">* Lascia la tua recensione:</label>
                         <textarea name="description" rows="10" id="description-review" v-model="userMessageReview"></textarea>
@@ -292,14 +277,26 @@
                             {{ error }}
                         </div>
                     </div>
-                    <div class="rating py-3">
-                        <div>Valuta il dottore!</div>
-                        <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
-                        <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
-                        <input type="radio" id="star3" name="rating" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
-                        <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
-                        <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
-                    </div>
+       
+                        <option selected>Valuta il medico</option>
+                        <div class="rating mb-3" id="rating">
+                                <input type="radio" id="star1" name="rating" value="5" v-model="userRate" @change="highlightStars(5)">
+                                <label for="star1" class="me-2">★</label>
+                
+                                <input type="radio" id="star2" name="rating" value="5" v-model="userRate" @change="highlightStars(4)">
+                                <label for="star2" class="me-2">★</label>
+                
+                                <input type="radio" id="star3" name="rating" value="5" v-model="userRate" @change="highlightStars(3)">
+                                <label for="star3" class="me-2">★</label>
+                
+                                <input type="radio" id="star4" name="rating" value="5" v-model="userRate" @change="highlightStars(2)">
+                                <label for="star4" class="me-2">★</label>
+                
+                                <input type="radio" id="star5" name="rating" value="5" v-model="userRate" @change="highlightStars(1)">
+                                <label for="star5" class="me-2">★</label>
+                        </div>        
+
+
                     <!-- Input user description -->
     
                     <!-- User rating -->
