@@ -128,7 +128,7 @@ export default {
     display: flex;
 
 }
-input:checked ~ label{
+input:checked ~ label.ms-badge{
     background-color: $secondary-color;
     color: $primary-color;
 }
