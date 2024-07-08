@@ -94,7 +94,7 @@
       const firstCardWidth = this.$refs.carousel.querySelector(".card").offsetWidth;
       this.timeoutId = setTimeout(() => {
         this.$refs.carousel.scrollLeft += firstCardWidth;
-      }, 5000);
+      }, 15000);
     },
     clearAutoPlay() {
       clearTimeout(this.timeoutId);
