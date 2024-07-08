@@ -2,11 +2,14 @@
 import axios from 'axios';
 import { store } from '../store.js';
 import AppCarousel from '../components/AppCarousel.vue';
+import AppLoader from '../components/AppLoader.vue';
+
 
 export default {
     name: 'AppHome',
     components: {
-        AppCarousel
+        AppCarousel,
+        AppLoader
     },
     data() {
         return {
@@ -14,9 +17,19 @@ export default {
             specialisations: [],
             selectedRating: 0,
             minRating: 0,
+            sponsoredProfiles: [],
+            loading: false,
         }
     },
     methods: {
+        getProfileSponsored() {
+        axios.get(`${this.store.apiUrl}/api/sponsored`)
+        .then((response) => {
+            console.log('cards' , response.data.sponsored);
+            this.sponsoredProfiles = response.data.sponsored;
+            console.log('sponsoredProfiles', this.sponsoredProfiles.spons_name);
+        });
+        },
         getAllSpecialisations() {
             axios.get(`${this.store.apiUrl}/api/specialisations`)
                 .then((response) => {
@@ -70,67 +83,71 @@ export default {
     },
     mounted() {
         this.getAllSpecialisations();
+        this.getProfileSponsored();
     },
 }
 </script>
 
 <template>
-    <div class="container-fluid custom-background">
-        <div class="row justify-content-center align-items-start">
-            <div class="col-lg-4 col-md-4 col-sm-10 d-flex flex-column align-items-center">
-                <div class="blue-box">
-                    <img src="https://imgur.com/GBXXplQ.jpg" alt="">
+    <AppLoader v-if="!loading"></AppLoader>
+    <div v-else class="home-wrapper">
+        <div class="container-fluid custom-background">
+            <div class="row justify-content-center align-items-start">
+                <div class="col-lg-4 col-md-4 col-sm-10 d-flex flex-column align-items-center">
+                    <div class="blue-box">
+                        <img src="https://imgur.com/GBXXplQ.jpg" alt="">
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-10 d-flex flex-column align-items-center my-3">
-                <div class="ms-scritte">
-                    <h1 class="text-center text-white ms-mb">Benvenuto in BDoctors!</h1>
-                    <h2 class="text-center text-white ms-mb-2">Qui troverai lo specialista che fa per te!</h2>
+                <div class="col-lg-4 col-md-4 col-sm-10 d-flex flex-column align-items-center my-3">
+                    <div class="ms-scritte">
+                        <h1 class="text-center text-white ms-mb">Benvenuto in BDoctors!</h1>
+                        <h2 class="text-center text-white ms-mb-2">Qui troverai lo specialista che fa per te!</h2>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-10 d-flex flex-column align-items-center">
-                <div class="red-box">
-                    <img src="https://imgur.com/P5b3i9X.jpg" alt="">
+                <div class="col-lg-4 col-md-4 col-sm-10 d-flex flex-column align-items-center">
+                    <div class="red-box">
+                        <img src="https://imgur.com/P5b3i9X.jpg" alt="">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="container mt-5">
-        <h2 class="text-center mb-3 title-sponsor">I dottori in evidenza:</h2>
-        <div class="d-flex justify-content-center mb-5">
-            <AppCarousel></AppCarousel>
+    
+        <div class="container mt-5">
+            <h2 class="text-center mb-3 title-sponsor">I dottori in evidenza:</h2>
+            <div class="d-flex justify-content-center mb-5">
+                <AppCarousel :sponsoredProfiles="sponsoredProfiles"></AppCarousel>
+            </div>
         </div>
-    </div>
-
-    <div class="search-bar container">
-        <form class="d-flex gap-3 my-4 flex-column justify-content-center" id="filterForm" @submit.prevent="submitForm">
-            <h4 class="test py-3">Cerca il dottore che fà per te!</h4>
-            <div class="container badge-wrapper d-flex flex-wrap gap-3 justify-content-center">
-                <div v-for="specialisation in specialisations" :key="specialisation.id">
-                    <input type="checkbox" class="hide" name="specialisation_slug" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
-                    <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
+    
+        <div class="search-bar container">
+            <form class="d-flex gap-3 my-4 flex-column justify-content-center" id="filterForm" @submit.prevent="submitForm">
+                <h4 class="test py-3">Cerca il dottore che fà per te!</h4>
+                <div class="container badge-wrapper d-flex flex-wrap gap-3 justify-content-center">
+                    <div v-for="specialisation in specialisations" :key="specialisation.id">
+                        <input type="checkbox" class="hide" name="specialisation_slug" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
+                        <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
+                    </div>
                 </div>
-            </div>
-            <div class="rating">
-                <input type="radio" id="star5" name="average_score" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
-                <input type="radio" id="star4" name="average_score" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
-                <input type="radio" id="star3" name="average_score" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
-                <input type="radio" id="star2" name="average_score" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
-                <input type="radio" id="star1" name="average_score" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
-            </div>
-            <div class="reviews-count">
-                <select name="min_reviews" :value="minRating" class="form-select" aria-label="Default select example">
-                    <option selected>Scegli in numero di recensioni minime</option>
-                    <option value="0">0</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                </select>
-            </div>
-            <div class="button-wrapper d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary btn-brand">Cerca Medico</button>
-            </div>
-        </form>
+                <div class="rating">
+                    <input type="radio" id="star5" name="average_score" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
+                    <input type="radio" id="star4" name="average_score" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
+                    <input type="radio" id="star3" name="average_score" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
+                    <input type="radio" id="star2" name="average_score" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
+                    <input type="radio" id="star1" name="average_score" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
+                </div>
+                <div class="reviews-count">
+                    <select name="min_reviews" :value="minRating" class="form-select" aria-label="Default select example">
+                        <option selected>Scegli in numero di recensioni minime</option>
+                        <option value="0">0</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="button-wrapper d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary btn-brand">Cerca Medico</button>
+                </div>
+            </form>
+        </div>
     </div>
     <footer>
         <div class="container">
@@ -246,5 +263,13 @@ footer {
 
 .rating > input:focus ~ label {
     color: #f5b301;
+}
+
+
+//RESPONSIVITY
+@media screen and (max-width:800px){
+    footer{
+        width: 90%;
+    }
 }
 </style>
