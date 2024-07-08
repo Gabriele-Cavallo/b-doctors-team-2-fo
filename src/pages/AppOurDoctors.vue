@@ -101,4 +101,12 @@ section{
     }
 }
 }
+
+
+//RESPONSIVITY
+@media screen and (max-width:800px){
+    footer{
+        width: 90%;
+    }
+}
 </style>

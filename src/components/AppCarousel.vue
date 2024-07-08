@@ -89,7 +89,7 @@
       const firstCardWidth = this.$refs.carousel.querySelector(".card").offsetWidth;
       this.timeoutId = setTimeout(() => {
         this.$refs.carousel.scrollLeft += firstCardWidth;
-      }, 5000);
+      }, 15000);
     },
     clearAutoPlay() {
       clearTimeout(this.timeoutId);
@@ -131,7 +131,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -156,7 +155,7 @@ body {
   position: absolute;
   text-align: center;
   line-height: 50px;
-  background: #a5a5a586;
+  background: #c9c9c986;
   border-radius: 50%;
   transform: translateY(-50%);
   }

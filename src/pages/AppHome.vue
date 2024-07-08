@@ -264,4 +264,12 @@ footer {
 .rating > input:focus ~ label {
     color: #f5b301;
 }
+
+
+//RESPONSIVITY
+@media screen and (max-width:800px){
+    footer{
+        width: 90%;
+    }
+}
 </style>
