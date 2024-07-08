@@ -134,7 +134,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -159,7 +158,7 @@ body {
   position: absolute;
   text-align: center;
   line-height: 50px;
-  background: #a5a5a586;
+  background: #c9c9c986;
   border-radius: 50%;
   transform: translateY(-50%);
   }
