@@ -181,8 +181,9 @@
     
                     <!-- Input user name -->
                     <div class="mb-3">
-                        <label class="form-check-label me-2" for="name">* Nome</label>
-                        <input type="text" name="name" id="name" v-model="userName">
+                        <label class="form-check-label me-2" for="name"><span class="text-danger">*</span> Nome</label>
+                        <div></div>
+                        <input  type="text" name="name" id="name" v-model="userName">
                     </div>
                     <div v-if="errors.name">
                         <div v-for="error in errors.name" class="alert alert-danger" role="alert">
@@ -193,7 +194,8 @@
     
                     <!-- Input object -->
                     <div class="mb-3">
-                        <label class="form-check-label me-2" for="object">* Oggetto</label>
+                        <label class="form-check-label me-2 fw-bold" for="object"><span class="text-danger">*</span> Oggetto</label>
+                        <div></div>
                         <input type="text" name="object" id="object" v-model="userObject">
                     </div>
                     <div v-if="errors.name">
@@ -205,7 +207,8 @@
     
                     <!-- Input user email -->
                     <div class="mb-3">
-                        <label for="email" class="form-label me-2">* Email</label>
+                        <label for="email" class="form-check-label me-2 fw-bold"><span class="text-danger">*</span> Email</label>
+                        <div></div>
                         <input type="email" id="email" aria-describedby="emailHelp" name="email" v-model="userEmail">
                     </div>
                     <div v-if="errors.email">
@@ -217,7 +220,7 @@
     
                     <!-- Input user message -->
                     <div class="mb-3">
-                        <label for="message" class="form-label ms-label">* Chiedo al medico:</label>
+                        <label for="message" class="form-check-label me-2 fw-bold"><span class="text-danger">*</span> Chiedi al medico:</label>
                         <textarea name="message" rows="10" id="message" v-model="userMessage"></textarea>
                     </div>
                     <div v-if="errors.message">
@@ -251,11 +254,12 @@
             </div>
             <div v-else class="review-wrapper container p-2">
                 <h2>Scrivi una recensione</h2>
-                <div class="danger mb-2">* campi obbligatori</div>
+                <div class="danger mb-2"><span class="text-danger">*</span> campi obbligatori</div>
                 <form @submit.prevent="sendReviewAndRating">
                     <!-- Input user name -->
                     <div class="mb-3">
-                        <label class="form-check-label me-2" for="name-review">Nome</label>
+                        <label class="form-check-label me-2 fw-bold" for="name-review">Nome</label>
+                        <div></div>
                         <input type="text" name="name" id="name-review" v-model="userNameReview">
                     </div>
                     <div v-if="errors.name">
@@ -265,7 +269,7 @@
                     </div>
                 
                     <div class="mb-1">
-                        <label for="description-review" class="form-label ms-label">* Lascia la tua recensione:</label>
+                        <label for="description-review" class="form-check-label me-2 fw-bold"><span class="text-danger">*</span> Lascia la tua recensione:</label>
                         <textarea name="description" rows="10" id="description-review" v-model="userMessageReview"></textarea>
                         
                     </div>
@@ -276,7 +280,7 @@
                         </div>
                     </div>
        
-                        <option selected>Valuta il medico</option>
+                        <option selected class="fw-bold">Valuta il medico</option>
                         <div class="rating mb-3" id="rating">
                                 <input type="radio" id="star1" name="rating" value="1" v-model="selectedRating" @change="highlightStars(5)">
                                 <label for="star1" class="me-2">★</label>
