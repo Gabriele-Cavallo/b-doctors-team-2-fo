@@ -3,25 +3,23 @@ import axios from 'axios';
 
     export default {
         name: 'SearchResults',
-        Data() {
+        data() {
             return {
                 filteredResults: [],
             }
-        },
-        props: {
-            specialisations: Array,
-            rating: Number,
-            reviews: Number,
         },
         methods: {
             filteredResultsCall() {
                 const query = this.$route.query;
 
-                axios.get(`${this.store.apiUrl}/api/filter-results`, { params: query })
+                axios.get(`${this.store.apiUrl}/api/search-results`, { params: query })
                 .then(response => {
                     this.filteredResults = response.data.results;
                 })
             }
+        },
+        watch: {
+            '$route.query': 'filteredResultsCall'
         },
         created() {
             this.filteredResultsCall();

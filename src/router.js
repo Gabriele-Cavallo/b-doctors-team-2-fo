@@ -50,7 +50,11 @@ const router = createRouter({
             path: '/search-results',
             name: 'search-results',
             component: SearchResults,
-            props: true,
+            props: (route) => ({
+                specialisation_slug: route.query.specialisation_slug,
+                min_reviews: route.query.min_reviews,
+                min_rating: route.query.min_rating,
+            }),
         }
     ]
 });

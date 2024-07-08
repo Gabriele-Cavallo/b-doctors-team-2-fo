@@ -13,7 +13,6 @@ export default {
             store,
             specialisations: [],
             selectedRating: 0,
-            minReviews: 0, // 
             minRating: 0,
         }
     },
@@ -29,17 +28,26 @@ export default {
             const form = document.getElementById('filterForm');
             const formData = new FormData(form);
             const params = new URLSearchParams();
+            let specialisations = [];
             for (const pair of formData.entries()) {
-                params.append(pair[0], pair[1]);
+                if (pair[0] === 'specialisation_slug') {
+                specialisations.push(pair[1]);
+                } else {
+                    params.append(pair[0], pair[1]);
+                }
             }
-            params.append('minReviews', this.minReviews);
-            axios.get(`${this.store.apiUrl}/api/filter-results`, { params: params })
+            if (specialisations.length > 0) {
+                params.append('specialisation_slug', specialisations.join(','));
+            }
+            
+            axios.get(`${this.store.apiUrl}/api/search-results`, { params: params })
                 .then((response) => {
                     // window.location.href = response.data.url;
-                    this.$router.push({ path: '/search-results', query: params });
+                    this.$router.push({ path: '/search-results', query: Object.fromEntries(params) });
                 })
                 .catch(error => {
                     console.error('Qualcosa è andato storto!', error);
+                    alert('Errore nella ricerca dei risultati. Per favore riprova.');
                 });
         },
         highlightStars(rating) {
@@ -100,16 +108,24 @@ export default {
             <h4 class="test py-3">Cerca il dottore che fà per te!</h4>
             <div class="container badge-wrapper d-flex flex-wrap gap-3 justify-content-center">
                 <div v-for="specialisation in specialisations" :key="specialisation.id">
-                    <input type="checkbox" class="hide" :name="`specialisation`" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
+                    <input type="checkbox" class="hide" name="specialisation_slug" :id="`specialisation-${specialisation.id}`" :value="`${specialisation.slug}`">
                     <label class="btn btn-brand badge ms-badge" :for="`specialisation-${specialisation.id}`">{{ specialisation.name }}</label>
                 </div>
             </div>
             <div class="rating">
-                <input type="radio" id="star5" name="rating" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
-                <input type="radio" id="star4" name="rating" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
-                <input type="radio" id="star3" name="rating" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
-                <input type="radio" id="star2" name="rating" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
-                <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
+                <input type="radio" id="star5" name="average_score" value="5" @click="highlightStars(5)" /><label for="star5" title="5 stars">★</label>
+                <input type="radio" id="star4" name="average_score" value="4" @click="highlightStars(4)" /><label for="star4" title="4 stars">★</label>
+                <input type="radio" id="star3" name="average_score" value="3" @click="highlightStars(3)" /><label for="star3" title="3 stars">★</label>
+                <input type="radio" id="star2" name="average_score" value="2" @click="highlightStars(2)" /><label for="star2" title="2 stars">★</label>
+                <input type="radio" id="star1" name="average_score" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
+            </div>
+            <div class="reviews-count">
+                <select name="min_reviews" :value="minRating" class="form-select" aria-label="Default select example">
+                    <option selected>Scegli in numero di recensioni minime</option>
+                    <option value="0">0</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                </select>
             </div>
             <div class="button-wrapper d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary btn-brand">Cerca Medico</button>
