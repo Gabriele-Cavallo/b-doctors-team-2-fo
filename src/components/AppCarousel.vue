@@ -1,6 +1,9 @@
 <script>
     export default {
   name: 'AppCarousel',
+  props: {
+    sponsoredProfiles: Array
+  },
   data() {
     return {
       isDragging: false,
@@ -8,16 +11,7 @@
       startX: 0,
       startScrollLeft: 0,
       timeoutId: null,
-      cards: [
-        { id: 1, img: 'https://thumbs.dreamstime.com/b/medico-medico-maschio-illustrazione-di-vettore-78381665.jpg', name: 'Dottore 1' },
-        { id: 2, img: 'https://thumbs.dreamstime.com/b/medico-medico-maschio-illustrazione-di-vettore-78381665.jpg', name: 'Dottore 2' },
-        { id: 3, img: 'https://thumbs.dreamstime.com/b/medico-medico-maschio-illustrazione-di-vettore-78381665.jpg', name: 'Dottore 3' },
-        { id: 4, img: 'https://thumbs.dreamstime.com/b/medico-medico-maschio-illustrazione-di-vettore-78381665.jpg', name: 'Dottore 4' },
-        { id: 5, img: 'https://thumbs.dreamstime.com/b/medico-medico-maschio-illustrazione-di-vettore-78381665.jpg', name: 'Dottore 5' },
-        { id: 6, img: 'https://thumbs.dreamstime.com/b/medico-medico-maschio-illustrazione-di-vettore-78381665.jpg', name: 'Dottore 6' },
-        { id: 7, img: 'https://thumbs.dreamstime.com/b/medico-medico-maschio-illustrazione-di-vettore-78381665.jpg', name: 'Dottore 7' },
-        { id: 8, img: 'https://thumbs.dreamstime.com/b/medico-medico-maschio-illustrazione-di-vettore-78381665.jpg', name: 'Dottore 8' },
-      ],
+      users: [],
       cardPerView: 0,
     };
   },
@@ -32,6 +26,7 @@
     this.$refs.wrapper.addEventListener("mouseleave", this.autoPlay);
   },
   methods: {
+    
     initCarousel() {
       const carousel = this.$refs.carousel;
       const firstCardWidth = carousel.querySelector(".card").offsetWidth;
@@ -113,19 +108,21 @@
 
 
 <template>
+  <div class="carousel-wrapper">
     <div class="wrapper" ref="wrapper">
     <div class="carousel" ref="carousel">
-      <ul class="carousel" v-for="card in cards" :key="card.id">
-        <li class="card">
+      <ul class="carousel">
+        <li  v-for="sponsoredProfile in sponsoredProfiles" :key="sponsoredProfile.id" class="card">
           <div class="img">
-            <img :src="card.img" alt="" draggable="false" />
+            <img :src="sponsoredProfile.photo" alt="" draggable="false" />
           </div>
-          <h2>{{ card.name }}</h2>
+          <h2>{{ sponsoredProfile.user_name }}</h2>
         </li>
       </ul>
     </div>
     <i class="fa-solid fa-chevron-left" id="left" @click="scrollLeft"></i>
     <i class="fa-solid fa-chevron-right" id="right" @click="scrollRight"></i>
+    </div>
   </div>
 </template>
 
