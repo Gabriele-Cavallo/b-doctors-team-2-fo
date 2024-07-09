@@ -257,9 +257,9 @@
   display: flex;
   .card{
     width: 300px;
-    border: 1px solid #00c3a5;
-    border-radius: 8px;
-    margin: 20px
+    border: 2px solid #00c3a5;
+    border-radius: 16px;
+    margin: 20px;
     h2{
       margin: 15px 10px;
     }
