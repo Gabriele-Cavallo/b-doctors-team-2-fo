@@ -144,10 +144,10 @@
       <div class="img">
         <img :src="sponsoredProfile.photo" alt="" draggable="false"/>
       </div>
-      <h2>{{ sponsoredProfile.user_name }}</h2>
-      <h2>{{ sponsoredProfile.user_name }}</h2>
-      <p>{{ sponsoredProfile.specialisations }}</p>
-      <p>{{ sponsoredProfile.performance }}</p>
+      <h2 class="py-3 px-2">{{ sponsoredProfile.user_name }}</h2>
+      <!-- <h2>{{ sponsoredProfile.user_name }}</h2> -->
+      <p class="p-2">{{ sponsoredProfile.specialisations }}</p>
+      <p class="p-2">{{ sponsoredProfile.performance }}</p>
     </div>
   </div> 
 </template>
