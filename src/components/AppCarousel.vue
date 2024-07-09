@@ -145,6 +145,7 @@
         <img :src="sponsoredProfile.photo" alt="" draggable="false" />
       </div>
       <h2>{{ sponsoredProfile.user_name }}</h2>
+      <h2>{{ sponsoredProfile.user_name }}</h2>
       <p>{{ sponsoredProfile.specialisations }}</p>
       <p>{{ sponsoredProfile.performance }}</p>
     </div>
