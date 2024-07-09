@@ -123,7 +123,7 @@
     <i class="fa-solid fa-chevron-left" id="left" @click="scrollLeft"></i>
     <i class="fa-solid fa-chevron-right" id="right" @click="scrollRight"></i>
     </div>
-  </div> -->
+  </div>
   <div>
     <ul class="carousel text-center">
       <li  v-for="sponsoredProfile in sponsoredProfiles" :key="sponsoredProfile.id" class="card">
@@ -138,6 +138,16 @@
         <p>{{ sponsoredProfile.performance }}</p>
       </li>
     </ul>
+  </div>-->
+  <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+    <div v-for="sponsoredProfile in sponsoredProfiles" :key="sponsoredProfile.id" class="col ms-col">
+      <div class="img">
+        <img :src="sponsoredProfile.photo" alt="" draggable="false" />
+      </div>
+      <h2>{{ sponsoredProfile.user_name }}</h2>
+      <p>{{ sponsoredProfile.specialisations }}</p>
+      <p>{{ sponsoredProfile.performance }}</p>
+    </div>
   </div>
 </template>
 
@@ -256,19 +266,14 @@
 //     grid-auto-columns: 100%;
 //   }
 // }
-.carousel{
-  display: flex;
-  .card{
-    width: 300px;
-    border: 2px solid #00c3a5;
-    border-radius: 16px;
-    margin: 20px;
-    h2{
-      margin: 15px 10px;
-    }
-    p{
-      margin: 8px 10px;
-    }
+.ms-col{
+  border: 2px solid #00c3a5;
+  border-radius: 16px;
+  h2{
+    margin: 15px 10px;
   }
-}
+  p{
+    margin: 8px 10px;
+  }
+  }
 </style>
