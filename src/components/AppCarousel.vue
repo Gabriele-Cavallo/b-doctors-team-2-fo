@@ -123,7 +123,7 @@
     <i class="fa-solid fa-chevron-left" id="left" @click="scrollLeft"></i>
     <i class="fa-solid fa-chevron-right" id="right" @click="scrollRight"></i>
     </div>
-  </div>
+  </div>-->
   <div>
     <ul class="carousel text-center">
       <li  v-for="sponsoredProfile in sponsoredProfiles" :key="sponsoredProfile.id" class="card">
@@ -138,18 +138,18 @@
         <p>{{ sponsoredProfile.performance }}</p>
       </li>
     </ul>
-  </div>-->
-  <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+  </div>
+  <!-- <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
     <div v-for="sponsoredProfile in sponsoredProfiles" :key="sponsoredProfile.id" class="col ms-col">
       <div class="img">
         <img :src="sponsoredProfile.photo" alt="" draggable="false"/>
       </div>
       <h2 class="py-3 px-2">{{ sponsoredProfile.user_name }}</h2>
-      <!-- <h2>{{ sponsoredProfile.user_name }}</h2> -->
+       <h2>{{ sponsoredProfile.user_name }}</h2> 
       <p class="p-2">{{ sponsoredProfile.specialisations }}</p>
       <p class="p-2">{{ sponsoredProfile.performance }}</p>
     </div>
-  </div> 
+  </div>  -->
 </template>
 
 <style lang="scss" scoped>
