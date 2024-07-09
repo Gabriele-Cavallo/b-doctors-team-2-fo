@@ -259,6 +259,7 @@
     width: 300px;
     border: 1px solid #00c3a5;
     border-radius: 8px;
+    margin: 20px
     h2{
       margin: 15px 10px;
     }
