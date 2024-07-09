@@ -25,7 +25,6 @@ export default {
     },
     methods: {
         shouldShowCard(result) {
-            // Controlla se almeno una delle specializzazioni del profilo coincide con specialisationParams
             return result.specialisations.some(spec => this.specialisationParams.includes(spec.slug)) &&
                     result.average_score >= this.scoreParams &&
                     result.review_count >= this.reviewsParams;
@@ -48,6 +47,16 @@ export default {
                     console.error('There was an error!', error);
                     this.loading = true; // Gestione dell'errore
                 });
+        },
+        getStars(score) {
+            const fullStars = Math.floor(score);
+            const halfStar = score % 1 !== 0;
+            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+            return {
+                fullStars: fullStars,
+                halfStar: halfStar,
+                emptyStars: emptyStars
+            };
         }
     },
     watch: {
@@ -61,12 +70,12 @@ export default {
 <template>
     <section>
         <AppLoader v-if="!loading" ></AppLoader>
-        <div v-else class="container">
-            <h1>Risultati ricerca:</h1>
+        <div v-else class="container py-5">
+            <h1>Risultati della ricerca:</h1>
             <template v-if="filteredResultsFiltered.length > 0">
-                <div class="doctor-wrapper card my-4 p-3" v-for="filteredResult in filteredResultsFiltered" :key="filteredResult.id">
-                    <div class="">
-                        <img class="profile-photo mb-3" v-if="filteredResult.photo" :src="`http://127.0.0.1:8000/storage/${filteredResult.photo}`" :alt="filteredResult.user_name">
+                <div class="card my-3 px-5" v-for="filteredResult in filteredResultsFiltered" :key="filteredResult.id">
+                    <div>
+                        <img class="profile-photo py-2" v-if="filteredResult.photo" :src="`http://127.0.0.1:8000/storage/${filteredResult.photo}`" :alt="filteredResult.user_name">
                     </div>
                     <p><strong>Nome:</strong> {{ filteredResult.user_name }}</p>
                     <p><strong>Email:</strong> {{ filteredResult.user_mail }}</p>
@@ -76,17 +85,54 @@ export default {
                         </span>
                     </p>
                     <p><strong>Numero recensioni:</strong> {{ filteredResult.review_count }}</p>
-                    <p><strong>Score:</strong> {{ filteredResult.average_score }}</p>
+                    <p><strong>Score:</strong>
+                        <span class="stars">
+                            <span v-for="n in getStars(filteredResult.average_score).fullStars" :key="'full-' + n" class="star full">&#9733;</span>
+                            <span v-if="getStars(filteredResult.average_score).halfStar" class="star half">&#9733;</span>
+                            <span v-for="n in getStars(filteredResult.average_score).emptyStars" :key="'empty-' + n" class="star empty">&#9733;</span>
+                        </span>
+                    </p>
                 </div>
                 <p v-if="filteredResultsFiltered.length === 0">Nessun risultato trovato.</p>
+                <router-link :to="{ name: 'our-doctors' }" class="btn btn-brand">Ritorna</router-link>
             </template>
             <p v-else>Nessun risultato trovato.</p>
         </div>
     </section>
 </template>
 
-
 <style scoped lang="scss">
 @use '../style/partials/variables' as *;
 
+section {
+    color: white;
+    background-color: $primary-color;
+    img {
+        max-height: 300px;
+        object-fit: cover;
+    }
+    .btn-brand {
+        color: $primary-color;
+        background-color: $secondary-color;
+    }
+    .stars {
+        display: inline-flex;
+        .star {
+            font-size: 20px;
+            &.full, &.half {
+                color: #f5b301;
+            }
+            &.empty {
+                color: gray;
+            }
+        }
+    }
+}
+
+//RESPONSIVITY
+@media screen and (max-width:800px){
+    footer{
+        width: 90%;
+    }
+}
 </style>
