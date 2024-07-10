@@ -128,23 +128,26 @@ export default {
                     <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
                 </div>
             </div>
-            <div :class="!doctor.visibility ? 'd-none' : ''" v-for="doctor in filteredDoctors" class="doctors-wrapper card my-4 p-3" :key="doctor.user_slug">
-                <div class="card-wrapper d-flex align-items-center">
-
-                    <div class="img-wrapper me-3">
-                        <img v-if="doctor.photo" :src="`http://127.0.0.1:8000/storage/${doctor.photo}`" :alt="doctor.user_name">
-                    </div>
-                    <div class="info-wrapper">
-                        <p><strong>Nome</strong>: {{ doctor.user_name }}</p>
-                        <p><strong>Email</strong>: {{ doctor.user_mail }}</p>
-                        <p><strong>Specializzazione</strong>: {{ doctor.spec_name }}</p>
-                        <p><strong>Performance</strong>: {{ doctor.performance }}</p>
-                        <p><strong>Telefono</strong>: {{ doctor.telephone_number }}</p>
-                        <p v-for="review in reviews">
-                            <p v-if="review.profile_id === doctor.id"><strong>Rating</strong>: {{ review.average_score }}</p>
-                        </p>
-                        <p><strong>Numero recensioni</strong>: {{ reviewCount }}</p>
-                        <router-link :to="{ name: 'single-doctor', params: { slug: doctor.user_slug } }" class="btn btn-brand">Mostra dottore</router-link>
+            <div class="row">
+                <div v-for="doctor in filteredDoctors" :key="doctor.user_slug" :class="!doctor.visibility ? 'd-none' : 'col-md-4'" class="mb-4">
+                    <div class="card h-100 d-flex flex-column justify-content-between text-center">
+                        <div>
+                            <img v-if="doctor.photo" :src="`http://127.0.0.1:8000/storage/${doctor.photo}`" :alt="doctor.user_name" class="card-img-top">
+                            <div class="card-body">
+                                <p class="card-title"><strong>Nome</strong>: {{ doctor.user_name }}</p>
+                                <p class="card-text"><strong>Email</strong>: {{ doctor.user_mail }}</p>
+                                <p class="card-text"><strong>Specializzazione</strong>: {{ doctor.spec_name }}</p>
+                                <p class="card-text"><strong>Performance</strong>: {{ doctor.performance }}</p>
+                                <p class="card-text"><strong>Telefono</strong>: {{ doctor.telephone_number }}</p>
+                                <div v-for="review in reviews">
+                                    <p v-if="review.profile_id === doctor.id"><strong>Rating</strong>: {{ review.average_score }}</p>
+                                </div>
+                                <p class="card-text"><strong>Numero recensioni</strong>: {{ reviewCount }}</p>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <router-link :to="{ name: 'single-doctor', params: { slug: doctor.user_slug } }" class="btn btn-brand">Mostra dottore</router-link>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -168,7 +171,7 @@ section {
         }
     }
     img {
-        max-height: 250px;
+        max-height: 415px;
         object-fit: cover;
     }
     .filter-wrapper, .search-wrapper, .checkbox-wrapper {
@@ -211,5 +214,10 @@ section {
 
 .rating > input:focus ~ label {
     color: #f5b301;
+}
+
+.card-footer {
+    background-color: transparent;
+    border-top: none;
 }
 </style>
