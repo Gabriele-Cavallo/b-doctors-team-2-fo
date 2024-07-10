@@ -15,6 +15,22 @@
       //cardPerView: 0,
     };
   },
+  methods: {
+    scrollLeft() {
+        const containerWidth = this.$refs.carousel.offsetWidth;
+        if (this.translateX < 0 || this.translateX >= 0) {
+            this.translateX += (containerWidth / this.images.length);
+            this.$refs.carousel.style.setProperty('--translate-x', `${this.translateX}px`);
+        }
+    },
+    scrollRight() {
+        const containerWidth = this.$refs.carousel.offsetWidth;
+        if (this.translateX < 0 || this.translateX >= 0) {
+            this.translateX -= (containerWidth / this.images.length);
+            this.$refs.carousel.style.setProperty('--translate-x', `${this.translateX}px`);
+        }
+    },
+  }
   // mounted() {
   //   this.initCarousel();
   //   this.autoPlay();
@@ -123,8 +139,8 @@
     <i class="fa-solid fa-chevron-left" id="left" @click="scrollLeft"></i>
     <i class="fa-solid fa-chevron-right" id="right" @click="scrollRight"></i>
     </div>
-  </div>
-  <div>
+  </div>-->
+  <!-- <div>
     <ul class="carousel text-center">
       <li  v-for="sponsoredProfile in sponsoredProfiles" :key="sponsoredProfile.id" class="card">
         <div>
@@ -138,21 +154,87 @@
         <p>{{ sponsoredProfile.performance }}</p>
       </li>
     </ul>
-  </div>-->
-  <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+  </div> -->
+  <!-- <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
     <div v-for="sponsoredProfile in sponsoredProfiles" :key="sponsoredProfile.id" class="col ms-col">
       <div class="img">
         <img :src="sponsoredProfile.photo" alt="" draggable="false"/>
       </div>
-      <h2 class="py-3 px-2">{{ sponsoredProfile.user_name }}</h2>
+      <h2 class="py-3 px-2">{{ sponsoredProfile.user_name }}</h2> -->
       <!-- <h2>{{ sponsoredProfile.user_name }}</h2> -->
-      <p class="p-2">{{ sponsoredProfile.specialisations }}</p>
+      <!-- <p class="p-2">{{ sponsoredProfile.specialisations }}</p>
       <p class="p-2">{{ sponsoredProfile.performance }}</p>
     </div>
-  </div> 
+  </div>  -->
+  
+
+<!-- <div id="carouselExampleCaptions" class="carousel carousel-dark slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button v-for="sponsoredProfile, index in sponsoredProfiles" :key="sponsoredProfile.id" type="button" data-bs-target="#carouselExampleCaptions" :data-bs-slide-to="index" class="active" aria-current="true"></button>
+  </div>
+  <div class="carousel-inner card">
+    <div v-for="sponsoredProfile in sponsoredProfiles" :key="sponsoredProfile.id" :class="['carousel-item', { active: index === 0 }]" class="d-flex flex-column card-body carousel-item">
+      <img :src="`http://127.0.0.1:8000/storage/${sponsoredProfile.photo}`" class="d-block w-100" alt="">
+      <div class="carousel-caption d-none d-md-block">
+        <h5 class="card-title">{{ sponsoredProfile.user_name }}</h5>
+        <p class="card-text">{{ sponsoredProfile.specialisations }}</p>
+        <p class="card-text">{{ sponsoredProfile.performance }}</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div> -->
+<div class="ms-carousel" ref="carousel">
+        <div class="images">
+            <img v-for="sponsoredProfile, index in sponsoredProfiles" :key="sponsoredProfile.index" :src="`http://127.0.0.1:8000/storage/${sponsoredProfile.photo}`" alt="carousel image" class="carousel-image">
+        </div>
+        <div class="btn-wrapper">
+            <button class="left" @click="scrollLeft">Scorri a sinistra</button>
+            <button class="right" @click="scrollRight">Scorri a destra</button>
+        </div>
+    </div>
+
 </template>
 
 <style lang="scss" scoped>
+@use '../style/partials/variables' as *;
+
+
+:root {
+  --translate-x: 0;
+}
+.btn-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 50%;
+    margin: 0 -150px;
+    transform: translateY(-50%);
+}
+.ms-carousel {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 150px;
+}
+.images {
+  display: flex;
+  transition: transform 0.5s ease;
+  transform: translateX(var(--translate-x));
+}
+.carousel-image {
+  width: 100%;
+  height: auto;
+}
 // * {
 //   margin: 0;
 //   padding: 0;
