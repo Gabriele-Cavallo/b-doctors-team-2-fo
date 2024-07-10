@@ -79,7 +79,7 @@ export default {
             const stars = document.querySelectorAll('.rating label');
             stars.forEach((star, index) => {
                 if (index <= 5 - rating) {
-                    star.style.color = '#f5b301';
+                    star.style.color = '#f5b301'; 
                 } else {
                     star.style.color = '#ddd';
                 }
@@ -94,6 +94,14 @@ export default {
             stars.forEach((star) => {
                 star.style.color = '#ddd';
             });
+        }
+    },
+    computed: {
+        getDoctorRating() {
+            return doctorId => {
+                const review = this.reviews.find(review => review.profile_id === doctorId);
+                return review ? review.average_score : 0;
+            };
         }
     },
     watch: {
@@ -128,19 +136,22 @@ export default {
                     <input type="radio" id="star1" name="rating" value="1" @click="highlightStars(1)" /><label for="star1" title="1 star">★</label>
                 </div>
             </div>
-            <div class="row">
+            <div class="card-container">
+                <div class="row">
                 <div v-for="doctor in filteredDoctors" :key="doctor.user_slug" :class="!doctor.visibility ? 'd-none' : 'col-md-4'" class="mb-4">
-                    <div class="card h-100 d-flex flex-column justify-content-between text-center">
+                    <div class="card h-100">
                         <div>
                             <img v-if="doctor.photo" :src="`http://127.0.0.1:8000/storage/${doctor.photo}`" :alt="doctor.user_name" class="card-img-top">
                             <div class="card-body">
-                                <p class="card-title"><strong>Nome</strong>: {{ doctor.user_name }}</p>
-                                <p class="card-text"><strong>Email</strong>: {{ doctor.user_mail }}</p>
-                                <p class="card-text"><strong>Specializzazione</strong>: {{ doctor.spec_name }}</p>
-                                <p class="card-text"><strong>Performance</strong>: {{ doctor.performance }}</p>
-                                <p class="card-text"><strong>Telefono</strong>: {{ doctor.telephone_number }}</p>
+                                <p> <strong>Nome</strong>: {{ doctor.user_name }}</p>
+                                <p><strong>Email</strong>: {{ doctor.user_mail }}</p>
+                                <p><strong>Specializzazione</strong>: {{ doctor.spec_name }}</p>
+                                <p><strong>Performance</strong>: {{ doctor.performance }}</p>
+                                <p><strong>Telefono</strong>: {{ doctor.telephone_number }}</p>
                                 <div v-for="review in reviews">
-                                    <p v-if="review.profile_id === doctor.id"><strong>Rating</strong>: {{ review.average_score }}</p>
+                                    <p v-if="review.profile_id === doctor.id"><strong>Valutazione del Dottore</strong>: 
+                                        <span v-for="n in 5" :key="n" class="star" :class="{'gold-star': n <= getDoctorRating(doctor.id)}">★</span>
+                                    </p>
                                 </div>
                                 <p class="card-text"><strong>Numero recensioni</strong>: {{ reviewCount }}</p>
                             </div>
@@ -150,6 +161,7 @@ export default {
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </section>
@@ -171,7 +183,7 @@ section {
         }
     }
     img {
-        max-height: 415px;
+        max-height: 315px;
         object-fit: cover;
     }
     .filter-wrapper, .search-wrapper, .checkbox-wrapper {
@@ -184,6 +196,23 @@ section {
     .no-doctors-found {
         text-align: center;
     }
+
+    .card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .card-footer {
+        margin-top: auto;
+        text-align: center;
+        background-color: transparent;
+        border-top: none;
+    }
+
 }
 
 .rating {
@@ -205,7 +234,7 @@ section {
 }
 
 .rating > input:checked ~ label {
-    color: #f5b301;
+    color:#f5b301;
 }
 
 .rating > input:checked ~ label ~ label {
@@ -213,11 +242,20 @@ section {
 }
 
 .rating > input:focus ~ label {
-    color: #f5b301;
+    color:#f5b301;
 }
 
 .card-footer {
     background-color: transparent;
     border-top: none;
+}
+
+.star {
+    color: #ddd;
+    font-size: 1.5rem;
+}
+
+.gold-star {
+    color: #f5b301;
 }
 </style>

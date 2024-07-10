@@ -67,34 +67,38 @@ export default {
     }
 };
 </script>
+
 <template>
     <section>
         <AppLoader v-if="!loading" ></AppLoader>
         <div v-else class="container py-5">
             <h1>Risultati della ricerca:</h1>
             <template v-if="filteredResultsFiltered.length > 0">
-                <div class="card my-3 px-5" v-for="filteredResult in filteredResultsFiltered" :key="filteredResult.id">
-                    <div>
-                        <img class="profile-photo py-2" v-if="filteredResult.photo" :src="`http://127.0.0.1:8000/storage/${filteredResult.photo}`" :alt="filteredResult.user_name">
+                <div class="card-container">
+                    <div class="card h-100" v-for="filteredResult in filteredResultsFiltered" :key="filteredResult.id">
+                        <img :src="`http://127.0.0.1:8000/storage/${filteredResult.photo}`" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p><strong>Nome:</strong> {{ filteredResult.user_name }}</p>
+                            <p><strong>Email:</strong> {{ filteredResult.user_mail }}</p>
+                            <p class="card-text"><strong>Specializzazioni: </strong>
+                                <span v-for="(specialisation, index) in filteredResult.specialisations" :key="specialisation.id">
+                                    {{ specialisation.name }}<span v-if="index < filteredResult.specialisations.length - 1">,</span> &nbsp;
+                                </span>
+                            </p>
+                            <p><strong>Numero recensioni:</strong> {{ filteredResult.review_count }}</p>
+                            <p><strong>Score:</strong>
+                                <span class="stars">
+                                    <span v-for="n in getStars(filteredResult.average_score).fullStars" :key="'full-' + n" class="star full">&#9733;</span>
+                                    <span v-if="getStars(filteredResult.average_score).halfStar" class="star half">&#9733;</span>
+                                    <span v-for="n in getStars(filteredResult.average_score).emptyStars" :key="'empty-' + n" class="star empty">&#9733;</span>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <router-link :to="{ name: 'single-doctor', params: { slug: filteredResult.user_slug } }" class="btn btn-brand">Mostra dottore</router-link>
+                        </div>
                     </div>
-                    <p><strong>Nome:</strong> {{ filteredResult.user_name }}</p>
-                    <p><strong>Email:</strong> {{ filteredResult.user_mail }}</p>
-                    <p class="card-text"><strong>Specializzazioni: </strong>
-                        <span v-for="(specialisation, index) in filteredResult.specialisations" :key="specialisation.id">
-                            {{ specialisation.name }}<span v-if="index < filteredResult.specialisations.length - 1">,</span> &nbsp;
-                        </span>
-                    </p>
-                    <p><strong>Numero recensioni:</strong> {{ filteredResult.review_count }}</p>
-                    <p><strong>Score:</strong>
-                        <span class="stars">
-                            <span v-for="n in getStars(filteredResult.average_score).fullStars" :key="'full-' + n" class="star full">&#9733;</span>
-                            <span v-if="getStars(filteredResult.average_score).halfStar" class="star half">&#9733;</span>
-                            <span v-for="n in getStars(filteredResult.average_score).emptyStars" :key="'empty-' + n" class="star empty">&#9733;</span>
-                        </span>
-                    </p>
                 </div>
-                <p v-if="filteredResultsFiltered.length === 0">Nessun risultato trovato.</p>
-                <router-link :to="{ name: 'our-doctors' }" class="btn btn-brand">Ritorna</router-link>
             </template>
             <p v-else>Nessun risultato trovato.</p>
         </div>
@@ -107,8 +111,9 @@ export default {
 section {
     color: white;
     background-color: $primary-color;
+    padding: 20px;
     img {
-        max-height: 300px;
+        max-height: 315px;
         object-fit: cover;
     }
     .btn-brand {
@@ -127,12 +132,30 @@ section {
             }
         }
     }
-}
-
-//RESPONSIVITY
-@media screen and (max-width:800px){
-    footer{
-        width: 90%;
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        justify-content: center;
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+    .card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .card-footer {
+        margin-top: auto;
+        text-align: center;
+        background-color: transparent;
+        border-top: none;
     }
 }
+
+
 </style>
