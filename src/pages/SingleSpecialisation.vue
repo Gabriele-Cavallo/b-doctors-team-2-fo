@@ -202,7 +202,6 @@ section {
 
     .card {
   background-color: #fff;
-  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   display: flex;
@@ -210,9 +209,9 @@ section {
   justify-content: space-between;
 
   .card-img-top {
-    height: 315px;  /* Altezza fissa per l'immagine */
-    object-fit: cover; /* Mantieni l'aspetto coperto */
-    border-radius: 10px 10px 0 0; /* Angoli arrotondati per l'immagine */
+    height: 315px;  
+    object-fit: cover; 
+
   }
 
   .card-body {

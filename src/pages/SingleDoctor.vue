@@ -344,9 +344,8 @@
             justify-content: center;
         }
         .profile-photo {
-            max-height: 300px;
-            max-width: 300px;
-            border-radius: 20px;
+            max-height: 500px;
+            max-width: 500px;
             object-fit: cover;
         }
         .alert-success > p{
