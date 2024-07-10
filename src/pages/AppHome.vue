@@ -160,7 +160,7 @@ export default {
                     </select>
                 </div>
                 <div class="button-wrapper d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary btn-brand">Cerca Medico</button>
+                    <button type="submit" class="btn btn-brand">Cerca Medico</button>
                 </div>
             </form>
         </div>
@@ -179,6 +179,7 @@ export default {
     width: fit-content;
     margin: 0 auto;
     display: flex;
+    color:$primary-color;
 
 }
 input:checked ~ label.ms-badge{
@@ -236,6 +237,19 @@ input:checked ~ label.ms-badge{
     }
 }
 
+
+.btn-brand {
+  color: white;
+  background-color: $primary-color;
+  font-weight: bold;
+}
+
+.btn-brand:hover {
+    background-color: $secondary-color;
+  color: $primary-color;
+  font-weight: bold;
+}
+
 .title-sponsor{
     color: $primary-color;
 }
@@ -246,7 +260,7 @@ footer {
     width: 50%;
     padding: 100px 0 10px 0;
     p {
-        border-top: 2px solid rgba(0, 0, 0, 0.522);
+        border-top: 2px solid $primary-color;
     }
 }
 

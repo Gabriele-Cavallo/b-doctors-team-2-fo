@@ -79,6 +79,7 @@
     color: $primary-color;
   }
 }
+border-color: $primary-color;
 }
 
 
