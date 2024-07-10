@@ -4,7 +4,6 @@ import { store } from '../store.js';
 import AppCarousel from '../components/AppCarousel.vue';
 import AppLoader from '../components/AppLoader.vue';
 
-
 export default {
     name: 'AppHome',
     components: {
@@ -15,29 +14,33 @@ export default {
         return {
             store,
             specialisations: [],
-            selectedRating: 0,
+            selectedRating: 5,
             minRating: 0,
             sponsoredProfiles: [],
             loading: false,
         }
     },
     methods: {
-        getProfileSponsored() {
-        axios.get(`${this.store.apiUrl}/api/sponsored`)
-        .then((response) => {
-            console.log('cards' , response.data.sponsored);
-            this.sponsoredProfiles = response.data.sponsored;
-            console.log('sponsoredProfiles', this.sponsoredProfiles.spons_name);
-        });
+        async getProfileSponsored() {
+            try {
+                const response = await axios.get(`${this.store.apiUrl}/api/sponsored`);
+                console.log('cards', response.data.sponsored);
+                this.sponsoredProfiles = response.data.sponsored;
+                console.log('sponsoredProfiles', this.sponsoredProfiles.spons_name);
+            } catch (error) {
+                console.error('Error fetching sponsored profiles', error);
+            }
         },
-        getAllSpecialisations() {
-            axios.get(`${this.store.apiUrl}/api/specialisations`)
-                .then((response) => {
-                    this.specialisations = response.data.results;
-                    this.loading = true;
-                })
+        async getAllSpecialisations() {
+            try {
+                const response = await axios.get(`${this.store.apiUrl}/api/specialisations`);
+                this.specialisations = response.data.results;
+                this.loading = true;
+            } catch (error) {
+                console.error('Error fetching specialisations', error);
+            }
         },
-        submitForm() {
+        async submitForm() {
             const form = document.getElementById('filterForm');
             const formData = new FormData(form);
             const params = new URLSearchParams();
@@ -54,7 +57,7 @@ export default {
             if (specialisations.length > 0) {
                 params.append('specialisation_slug', specialisations.join(','));
             } else {
-                // Imposta tutte le specializzazioni come default
+                // Set all specialisations as default
                 this.specialisations.forEach(spec => specialisations.push(spec.slug));
                 params.append('specialisation_slug', specialisations.join(','));
             }
@@ -67,15 +70,13 @@ export default {
                 params.append('min_reviews', 0);
             }
 
-            axios.get(`${this.store.apiUrl}/api/search-results`, { params: params })
-                .then((response) => {
-                    // window.location.href = response.data.url;
-                    this.$router.push({ path: '/search-results', query: Object.fromEntries(params) });
-                })
-                .catch(error => {
-                    console.error('Qualcosa è andato storto!', error);
-                    alert('Errore nella ricerca dei risultati. Per favore riprova.');
-                });
+            try {
+                const response = await axios.get(`${this.store.apiUrl}/api/search-results`, { params: params });
+                this.$router.push({ path: '/search-results', query: Object.fromEntries(params) });
+            } catch (error) {
+                console.error('Qualcosa è andato storto!', error);
+                alert('Errore nella ricerca dei risultati. Per favore riprova.');
+            }
         },
         highlightStars(rating) {
             if (this.selectedRating === rating) {
@@ -98,6 +99,7 @@ export default {
     mounted() {
         this.getAllSpecialisations();
         this.getProfileSponsored();
+        this.highlightStars(5);
     },
 }
 </script>

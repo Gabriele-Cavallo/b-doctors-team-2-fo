@@ -113,6 +113,13 @@ section {
         max-height: 315px;
         object-fit: cover;
     }
+
+    p {
+        strong {
+            color: $primary-color;
+        }
+    }
+
     .btn-brand {
         color: $primary-color;
         background-color: $secondary-color;
@@ -125,7 +132,7 @@ section {
                 color: #f5b301;
             }
             &.empty {
-                color: gray;
+                color: #ddd;
             }
         }
     }
