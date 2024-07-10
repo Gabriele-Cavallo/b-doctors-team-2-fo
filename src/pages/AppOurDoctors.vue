@@ -35,7 +35,7 @@ export default {
             return this.doctors.filter(doctor =>
                 doctor.specialisations.some(spec => spec.name === specialisationName)
                 && doctor.visibility === 1
-            ).slice(0, 5); 
+            ).slice(0, 4); 
         }
     },
     mounted() {
