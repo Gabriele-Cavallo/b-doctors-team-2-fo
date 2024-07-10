@@ -35,9 +35,6 @@ export default {
             this.specialisationParams = specialisationSlugs.split(',').map(slug => slug.trim());
             this.scoreParams = parseInt(query.average_score);
             this.reviewsParams = parseInt(query.min_reviews);
-            console.log('specialisationParams', this.specialisationParams);
-            console.log('scoreParams', this.scoreParams);
-            console.log('reviewsParams', this.reviewsParams);
             axios.get(`${this.store.apiUrl}/api/search-results`, { params: query })
                 .then(response => {
                     this.filteredResults = response.data;

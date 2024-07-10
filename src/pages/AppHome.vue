@@ -42,17 +42,31 @@ export default {
             const formData = new FormData(form);
             const params = new URLSearchParams();
             let specialisations = [];
+
             for (const pair of formData.entries()) {
                 if (pair[0] === 'specialisation_slug') {
-                specialisations.push(pair[1]);
+                    specialisations.push(pair[1]);
                 } else {
                     params.append(pair[0], pair[1]);
                 }
             }
+
             if (specialisations.length > 0) {
                 params.append('specialisation_slug', specialisations.join(','));
+            } else {
+                // Imposta tutte le specializzazioni come default
+                this.specialisations.forEach(spec => specialisations.push(spec.slug));
+                params.append('specialisation_slug', specialisations.join(','));
             }
-            
+
+            if (!params.has('average_score')) {
+                params.append('average_score', 0);
+            }
+
+            if (!params.has('min_reviews')) {
+                params.append('min_reviews', 0);
+            }
+
             axios.get(`${this.store.apiUrl}/api/search-results`, { params: params })
                 .then((response) => {
                     // window.location.href = response.data.url;
