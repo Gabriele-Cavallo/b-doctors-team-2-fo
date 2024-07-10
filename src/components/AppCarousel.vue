@@ -42,18 +42,22 @@
 @use '../style/partials/variables' as *;
 
 .img-container {
-  height: 315px;
+  height: 315px;  /* Altezza fissa per il contenitore dell'immagine */
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative; /* Aggiunto per gestire l'overflow delle immagini */
 }
 
 
 
   img {
-        max-height: 315px;
-        object-fit: cover; 
-}
+    height: 100%;  
+    width: 100%;  
+    object-fit: cover;
+    position: absolute; 
+    top: 0; left: 0; 
+  }
 
 .btn-brand {
   color: white;
