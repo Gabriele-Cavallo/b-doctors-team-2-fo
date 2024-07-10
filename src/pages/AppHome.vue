@@ -305,6 +305,15 @@ footer {
     color: #f5b301;
 }
 
+footer {
+    text-align: center;
+    margin: 0 auto;
+    width: 50%;
+    padding: 100px 0 10px 0;
+    p {
+        border-top: 2px solid $primary-color;
+    }
+}
 
 //RESPONSIVITY
 @media screen and (max-width:800px){

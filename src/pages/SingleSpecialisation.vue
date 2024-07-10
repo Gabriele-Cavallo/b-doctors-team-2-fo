@@ -164,7 +164,13 @@ export default {
             </div>
             </div>
         </div>
+        <footer>
+        <div class="container">
+            <p>© 2024 BDoctors. Tutti i diritti riservati. Le informazioni fornite su questo sito, comprese le prenotazioni delle visite mediche, i messaggi al medico e le recensioni, sono a scopo informativo e non sostituiscono il consiglio medico professionale.</p>
+        </div>
+    </footer>
     </section>
+
 </template>
 
 <style lang="scss" scoped>
@@ -258,4 +264,18 @@ section {
 .gold-star {
     color: #f5b301;
 }
+
+footer {
+        color: white;
+        text-align: center;
+        width: 50%;
+        padding: 100px 0 10px 0;
+        margin: 0 auto;
+        p {
+            border-top: 2px solid rgba(255, 255, 255, 0.522);
+        }
+        @media screen and (max-width:800px){
+        width: 90%;
+}
+    }
 </style>
