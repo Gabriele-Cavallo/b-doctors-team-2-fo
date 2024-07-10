@@ -191,50 +191,41 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div> -->
-<div class="ms-carousel" ref="carousel">
-        <div class="images">
-            <img v-for="sponsoredProfile, index in sponsoredProfiles" :key="sponsoredProfile.index" :src="`http://127.0.0.1:8000/storage/${sponsoredProfile.photo}`" alt="carousel image" class="carousel-image">
-        </div>
-        <div class="btn-wrapper">
-            <button class="left" @click="scrollLeft">Scorri a sinistra</button>
-            <button class="right" @click="scrollRight">Scorri a destra</button>
-        </div>
+<div class="carousel-wrapper container text-center d-flex flex-wrap">
+  <div class="ms-w" v-for="sponsoredProfile, index in sponsoredProfiles">
+    <div  class="ms-card d-flex flex-column">
+      <div class="d-flex justify-content-center">
+        <img class="ms-img" :src="`http://127.0.0.1:8000/storage/${sponsoredProfile.photo}`" alt="doctor-image">
+      </div>
+      <div class="info-wrapper">
+        <p>{{ sponsoredProfile.user_name }}</p>
+        <p>{{ sponsoredProfile.performance }}</p>
+      </div>
     </div>
+  </div>
+</div>
 
 </template>
 
 <style lang="scss" scoped>
 @use '../style/partials/variables' as *;
 
+.ms-img{
+  height: 200px;
+  width: 150px;
+  object-fit: cover;
+}
+.ms-card{
+  border: 1px solid $primary-color;
+  border-radius: 15px;
+  margin: 10px;
+  height: 100%;
+}
+.ms-w{
+  width: calc((100% / 3) - 20px);
+  margin: 10px;
+}
 
-:root {
-  --translate-x: 0;
-}
-.btn-wrapper{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    position: absolute;
-    top: 50%;
-    margin: 0 -150px;
-    transform: translateY(-50%);
-}
-.ms-carousel {
-  position: relative;
-  overflow: hidden;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 150px;
-}
-.images {
-  display: flex;
-  transition: transform 0.5s ease;
-  transform: translateX(var(--translate-x));
-}
-.carousel-image {
-  width: 100%;
-  height: auto;
-}
 // * {
 //   margin: 0;
 //   padding: 0;
