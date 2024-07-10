@@ -98,11 +98,18 @@ section {
         margin-left: -25px;
     }
 
-    .footer {
+    footer {
         color: white;
+        text-align: center;
+        width: 50%;
+        padding: 100px 0 10px 0;
+        margin: 0 auto;
         p {
             border-top: 2px solid rgba(255, 255, 255, 0.522);
         }
+        @media screen and (max-width:800px){
+        width: 90%;
+}
     }
 
 
