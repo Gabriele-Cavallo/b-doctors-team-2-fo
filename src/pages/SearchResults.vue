@@ -91,7 +91,7 @@ export default {
                     </p>
                 </div>
                 <p v-if="filteredResultsFiltered.length === 0">Nessun risultato trovato.</p>
-                <router-link :to="{ name: 'our-doctors' }" class="btn btn-brand">Ritorna</router-link>
+                <router-link :to="{ name: 'home' }" class="btn btn-brand">Ritorna alla home</router-link>
             </template>
             <p v-else>Nessun risultato trovato.</p>
         </div>
