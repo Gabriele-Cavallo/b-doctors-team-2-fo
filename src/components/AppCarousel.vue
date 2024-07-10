@@ -6,13 +6,13 @@
   },
   data() {
     return {
-      isDragging: false,
-      isAutoPlay: true,
-      startX: 0,
-      startScrollLeft: 0,
-      timeoutId: null,
+      // isDragging: false,
+      // isAutoPlay: true,
+      // startX: 0,
+      // startScrollLeft: 0,
+      // timeoutId: null,
       users: [],
-      cardPerView: 0,
+      //cardPerView: 0,
     };
   },
   // mounted() {
@@ -123,41 +123,21 @@
     <i class="fa-solid fa-chevron-left" id="left" @click="scrollLeft"></i>
     <i class="fa-solid fa-chevron-right" id="right" @click="scrollRight"></i>
     </div>
-  </div>
-  <div>
-    <ul class="carousel text-center">
-      <li  v-for="sponsoredProfile in sponsoredProfiles" :key="sponsoredProfile.id" class="card">
-        <div>
-          <img :src="sponsoredProfile.photo" alt="" draggable="false" />
-        </div>
-        <h2>{{ sponsoredProfile.user_name }}</h2>
-        <div class="">
-            <img class="profile-photo mb-3" v-if="sponsoredProfile.photo" :src="`http://127.0.0.1:8000/storage/${sponsoredProfile.photo}`" :alt="sponsoredProfile.user_name">
-        </div>
-        <p>{{ sponsoredProfile.specialisations }}</p>
-        <p>{{ sponsoredProfile.performance }}</p>
-      </li>
-    </ul>
   </div>-->
   <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
     <div v-for="sponsoredProfile in sponsoredProfiles" :key="sponsoredProfile.id" class="col ms-col">
       <div class="img">
-        <img :src="sponsoredProfile.photo" alt="" draggable="false" />
+        <img :src="sponsoredProfile.photo" alt="" draggable="false"/>
       </div>
-      <h2>{{ sponsoredProfile.user_name }}</h2>
-      <h2>{{ sponsoredProfile.user_name }}</h2>
-      <p>{{ sponsoredProfile.specialisations }}</p>
-      <p>{{ sponsoredProfile.performance }}</p>
+      <h2 class="py-3 px-2">{{ sponsoredProfile.user_name }}</h2>
+       <h2>{{ sponsoredProfile.user_name }}</h2> 
+      <p class="p-2">{{ sponsoredProfile.specialisations }}</p>
+      <p class="p-2">{{ sponsoredProfile.performance }}</p>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-// * {
-//   margin: 0;
-//   padding: 0;
-//   box-sizing: border-box;
-// }
 
 // body {
 //   display: flex;
@@ -269,12 +249,6 @@
 // }
 .ms-col{
   border: 2px solid #00c3a5;
-  border-radius: 16px;
-  h2{
-    margin: 15px 10px;
-  }
-  p{
-    margin: 8px 10px;
-  }
-  }
+  border-radius: 20px;
+}
 </style>
